@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -8,8 +9,9 @@ public class Main {
 
         main.mainMenu();
         main.selectOption(scanner);
-
+      
     }
+
 
     private void mainMenu() {
 
@@ -27,6 +29,8 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A Customer");
+                RegisterCustomer rc = new RegisterCustomer();
+                rc.registerCustomer();
                 break;
             case 2:
                 System.out.println("See List Of Cars");
