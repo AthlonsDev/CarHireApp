@@ -16,9 +16,10 @@ public class Main {
     private void mainMenu() {
 
         System.out.println("****************Welcome To Car Hire System****************");
-        System.out.println("1. Register As A Customer");
+        System.out.println("1. Login/Register");
         System.out.println("2. See List Of Cars");
         System.out.println("3. Search For a Car");
+        System.out.println("4. Exit");
 
         
     }
@@ -37,6 +38,12 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Search For a Car");
+                break;
+            case 4:
+                System.out.println("Exit");
+                // exit program
+                System.exit(0);
+
                 break;
             default:
                 System.out.println("Invalid Selection");
