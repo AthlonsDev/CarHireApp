@@ -1,8 +1,12 @@
+import java.io.File;
 import java.util.Scanner;
 
 import javax.sound.sampled.BooleanControl;
 
 public class RegisterCustomer extends Customer implements InputCheck {
+
+    String _username = " ";
+    String _password = " ";
     
     public void registerCustomer() {
 
@@ -12,8 +16,10 @@ public class RegisterCustomer extends Customer implements InputCheck {
    
         EnterPassword(input);
         
-        // save the username and password to a file
-        
+        // save the username and password to a JSON file
+        FileUploader fileManager = new FileUploader();
+
+        fileManager.SaveCustomer(_username, _password); // saves the username and password to a JSON file
 
     }
 
@@ -21,11 +27,14 @@ public class RegisterCustomer extends Customer implements InputCheck {
         System.out.println("Enter your username: ");
 
         String username = input.nextLine(); // gets the username from the user
-        if (checkUsername(username))
+        if (checkUsername(username)) {// checks if the username is at least 8 characters long
             setUsername(username); // sets the username to the username entered by the user
+            _username = username;
+        }
         else { 
             System.out.println("Username must be at least 8 characters long");
             EnterUsername(input);
+            
         }
 
     }
@@ -34,8 +43,10 @@ public class RegisterCustomer extends Customer implements InputCheck {
 
         System.out.println("Enter your password: ");
         String password = input.nextLine(); // gets the password from the user
-        if (checkPassword(password))
+        if (checkPassword(password)){ // checks if the password is at least 8 characters long and contains numbers and letters
             setPassword(password); // sets the password to the password entered by the user
+            _password = password;
+        }
         else {
             System.out.println("Password must be at least 8 characters long");
             EnterPassword(input);
