@@ -8,7 +8,7 @@ public class RegisterCustomer extends Customer implements InputCheck {
     String _username = " ";
     String _password = " ";
     
-    public void registerCustomer() {
+    public boolean registerCustomer() {
 
         Scanner input = new Scanner(System.in);
 
@@ -21,6 +21,7 @@ public class RegisterCustomer extends Customer implements InputCheck {
 
         fileManager.SaveCustomer(_username, _password); // saves the username and password to a JSON file
 
+        return Main.isLoggedIn = true;
     }
 
     private void EnterUsername(Scanner input) {
@@ -68,7 +69,7 @@ public class RegisterCustomer extends Customer implements InputCheck {
     public boolean checkPassword(String password) {
         // checks if the password is at least 8 characters long and contains numbers and letters
 
-        if(password.length() >= 8 && password.contains("1") && password.contains("2") && password.contains("3") && password.contains("4") && password.contains("5") && password.contains("6") && password.contains("7") && password.contains("8") && password.contains("9") && password.contains("0"))) {
+        if(password.length() >= 8 && password.contains("1") && password.contains("2") && password.contains("3") && password.contains("4") && password.contains("5") && password.contains("6") && password.contains("7") && password.contains("8") && password.contains("9") && password.contains("0")) {
             return true;
         }
 
