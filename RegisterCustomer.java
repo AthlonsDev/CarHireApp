@@ -62,6 +62,7 @@ public class RegisterCustomer extends Customer implements InputCheck {
         }
 
         // checks if the username is already taken
+        
 
         return false;
     }
