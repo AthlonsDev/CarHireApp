@@ -25,17 +25,7 @@ public class FileUploader {
             System.out.println("Error");
         }
 
-        // read the file and print it out
-        // File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Customers.json");
-        // try {
-        //     Scanner fileReader = new Scanner(file);
-        //     while(fileReader.hasNextLine()) {
-        //         String data = fileReader.nextLine();
-        //         System.out.println(data);
-        //     }
-        // } catch (FileNotFoundException e) {
-        //     e.printStackTrace();
-        // }
+    
 
 
     }
