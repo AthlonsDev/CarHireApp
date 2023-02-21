@@ -35,8 +35,9 @@ public class Main {
     }
 
     private void selectOption(Scanner scanner) {
-        
-        switch (scanner.nextInt()) {
+    
+        if(!isLoggedIn) {
+            switch (scanner.nextInt()) {
 
             case 1:
                 System.out.println("Register As A Customer");
@@ -59,6 +60,32 @@ public class Main {
             default:
                 System.out.println("Invalid Selection");
                 break;
+            }
+        } else {
+            switch (scanner.nextInt()) {
+
+                case 1:
+                    System.out.println("Log In");
+                    LoginCustomer lg = new LoginCustomer();
+                    lg.EnterCredentials();
+                    mainMenu();
+                    break;
+                case 2:
+                    System.out.println("See List Of Cars");
+                    break;
+                case 3:
+                    System.out.println("Search For a Car");
+                    break;
+                case 4:
+                    System.out.println("Exit");
+                    // exit program
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid Selection");
+                    mainMenu();
+                    break;
+                }
         }
     }
 

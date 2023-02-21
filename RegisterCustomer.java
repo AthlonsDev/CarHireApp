@@ -1,7 +1,8 @@
-import java.io.File;
 import java.util.Scanner;
 
-import javax.sound.sampled.BooleanControl;
+import FileHandler.FileUploader;
+import FileHandler.ValidateUser;
+
 
 public class RegisterCustomer extends Customer implements InputCheck {
 
@@ -9,8 +10,13 @@ public class RegisterCustomer extends Customer implements InputCheck {
     String _password = " ";
     
     public boolean registerCustomer() {
+        System.out.println("Register new User");
 
         Scanner input = new Scanner(System.in);
+
+        // System.out.println("Enter 0 to exit program");
+        // if(input.nextInt() == 0)
+        //     System.exit(0);
 
         EnterUsername(input);
    
@@ -58,13 +64,18 @@ public class RegisterCustomer extends Customer implements InputCheck {
     public boolean checkUsername(String username) {
 
         if(username.length() >= 6 && username.length() <= 20) {
+            // checks if the username is already taken
+            ValidateUser vu = new ValidateUser();
+            boolean isValid = vu.validateUser(username, null);
+            if (isValid) {
+                // Username already present -> go to login
+                System.out.println("username already taken");
+                return Main.isLoggedIn = true;
+            }
             return true;
+        } else {
+            return false;
         }
-
-        // checks if the username is already taken
-
-
-        return false;
     }
 
     public boolean checkPassword(String password) {
@@ -76,8 +87,5 @@ public class RegisterCustomer extends Customer implements InputCheck {
 
         return false;
     }
-
-
-    // explore the profile like saved cars and other things
 
 }
