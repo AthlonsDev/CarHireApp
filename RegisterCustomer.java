@@ -2,14 +2,10 @@ import java.util.Scanner;
 
 import FileHandler.FileUploader;
 import FileHandler.ValidateUser;
+import Models.User;
 
 
 public class RegisterCustomer extends Customer implements InputCheck {
-
-    public RegisterCustomer(String username, String password, String viewedCars, String savedCars, String hiredCars) {
-        super(username, password, viewedCars, savedCars, hiredCars);
-        //TODO Auto-generated constructor stub
-    }
 
     String _username = " ";
     String _password = " ";

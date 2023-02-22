@@ -43,10 +43,8 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A New User");
-                // RegisterCustomer rc = new RegisterCustomer();
-                // rc.registerCustomer();
-                FileUploader uploader = new FileUploader();
-                uploader.SaveCustomer("Athlon", "12345678");
+                RegisterCustomer rc = new RegisterCustomer();
+                rc.registerCustomer();
                 mainMenu();
                 break;
             case 2:
