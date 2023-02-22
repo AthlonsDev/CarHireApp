@@ -6,10 +6,25 @@ import java.util.Scanner;
 
 public class ValidateUser {
 
+    public boolean validateUsername(String user) {
+
+        // check if file exists
+        File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\" + user + ".json");
+        if(file.exists()) {
+            // username exists
+            return true;
+        }
+        else {
+            // username does not exist
+            return false;
+        }
+
+    }
+
     public boolean validateUser(String user, String password) {
         HashMap<String, String> userMap = new HashMap<String, String>();
 
-        File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\Customers.json");
+        File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\" + user + ".json");
         try {
             Scanner fileReader = new Scanner(file);
             while(fileReader.hasNextLine()) {
@@ -24,8 +39,8 @@ public class ValidateUser {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        if(userMap.get("Username").equals(user) && userMap.get("Password").equals(password)) {
+        
+        if(userMap.containsValue(user) && userMap.containsValue(password)) {
             return true;
         }
         else {

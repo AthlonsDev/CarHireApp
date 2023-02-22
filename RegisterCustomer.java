@@ -6,6 +6,11 @@ import FileHandler.ValidateUser;
 
 public class RegisterCustomer extends Customer implements InputCheck {
 
+    public RegisterCustomer(String username, String password, String viewedCars, String savedCars, String hiredCars) {
+        super(username, password, viewedCars, savedCars, hiredCars);
+        //TODO Auto-generated constructor stub
+    }
+
     String _username = " ";
     String _password = " ";
     
@@ -66,11 +71,12 @@ public class RegisterCustomer extends Customer implements InputCheck {
         if(username.length() >= 6 && username.length() <= 20) {
             // checks if the username is already taken
             ValidateUser vu = new ValidateUser();
-            boolean isValid = vu.validateUser(username, null);
+            boolean isValid = vu.validateUsername(username);
             if (isValid) {
                 // Username already present -> go to login
                 System.out.println("username already taken");
-                return Main.isLoggedIn = true;
+                LoginCustomer login = new LoginCustomer();
+                login.EnterCredentials();
             }
             return true;
         } else {

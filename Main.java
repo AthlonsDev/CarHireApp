@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import FileHandler.FileUploader;
+
 public class Main {
 
     public static boolean isLoggedIn = false;
@@ -40,9 +42,11 @@ public class Main {
             switch (scanner.nextInt()) {
 
             case 1:
-                System.out.println("Register As A Customer");
-                RegisterCustomer rc = new RegisterCustomer();
-                rc.registerCustomer();
+                System.out.println("Register As A New User");
+                // RegisterCustomer rc = new RegisterCustomer();
+                // rc.registerCustomer();
+                FileUploader uploader = new FileUploader();
+                uploader.SaveCustomer("Athlon", "12345678");
                 mainMenu();
                 break;
             case 2:
@@ -61,31 +65,6 @@ public class Main {
                 System.out.println("Invalid Selection");
                 break;
             }
-        } else {
-            switch (scanner.nextInt()) {
-
-                case 1:
-                    System.out.println("Log In");
-                    LoginCustomer lg = new LoginCustomer();
-                    lg.EnterCredentials();
-                    mainMenu();
-                    break;
-                case 2:
-                    System.out.println("See List Of Cars");
-                    break;
-                case 3:
-                    System.out.println("Search For a Car");
-                    break;
-                case 4:
-                    System.out.println("Exit");
-                    // exit program
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Invalid Selection");
-                    mainMenu();
-                    break;
-                }
         }
     }
 
