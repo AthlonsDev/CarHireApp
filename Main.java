@@ -49,6 +49,8 @@ public class Main {
                 break;
             case 2:
                 System.out.println("See List Of Cars");
+                CarList cl = new CarList();
+                cl.ShowCars();
                 break;
             case 3:
                 System.out.println("Search For a Car");

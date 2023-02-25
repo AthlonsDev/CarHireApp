@@ -9,6 +9,7 @@ public class User {
     private String savedCars;
     private String hiredCars;
 
+    // Constructor 
     public User(String username, String password, String viewedCars, String savedCars, String hiredCars) {
         this.username = username;
         this.password = password;
