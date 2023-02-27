@@ -20,10 +20,11 @@ public class Main {
 
         if(!isLoggedIn) {// main menu if not logged in
             System.out.println("****************Welcome To Car Hire System****************");
-            System.out.println("1. Login/Register");
-            System.out.println("2. See List Of Cars");
-            System.out.println("3. Search For a Car");
-            System.out.println("4. Exit");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. See List Of Cars");
+            System.out.println("4. Search For a Car");
+            System.out.println("5. Exit");
         }
         else {// main menu if logged in
             System.out.println("****************Welcome To Car Hire System****************");
@@ -43,19 +44,25 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A New User");
-                RegisterCustomer rc = new RegisterCustomer();
+                RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null);
                 rc.registerCustomer();
                 mainMenu();
                 break;
             case 2:
+                System.out.println("Login Existing User");
+                LoginCustomer login = new LoginCustomer();
+                login.EnterCredentials();
+                mainMenu();
+                break;
+            case 3:
                 System.out.println("See List Of Cars");
                 CarList cl = new CarList();
                 cl.ShowCars();
                 break;
-            case 3:
+            case 4:
                 System.out.println("Search For a Car");
                 break;
-            case 4:
+            case 5:
                 System.out.println("Exit");
                 // exit program
                 System.exit(0);
@@ -73,6 +80,8 @@ public class Main {
                 break;
             case 2:
                 System.out.println("See List Of Cars");
+                CarList cl = new CarList();
+                cl.ShowCars();
                 break;
             case 3:
                 System.out.println("Search For a Car");

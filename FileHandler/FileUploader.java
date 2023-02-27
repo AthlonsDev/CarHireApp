@@ -21,15 +21,15 @@ public class FileUploader {
         HashMap<String, String> userMap = new HashMap<String, String>();
         userMap.put("username", username);
         userMap.put("password", password);
-        userMap.put("viewedCars", "");
-        userMap.put("savedCars", "");
-        userMap.put("hiredCars", "");
+        userMap.put("viewedCars", "null");
+        userMap.put("savedCars", "null");
+        userMap.put("hiredCars", "null");
 
         String fileName = username;
         String filePath = "C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\";
 
         try {
-            FileWriter fileWriter = new FileWriter(filePath + fileName + ".json");
+            FileWriter fileWriter = new FileWriter(filePath + fileName + ".txt");
             fileWriter.write(userMap.toString());
             fileWriter.close();
         } catch (IOException e) {
