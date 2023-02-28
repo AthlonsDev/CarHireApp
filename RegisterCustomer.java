@@ -33,7 +33,7 @@ public class RegisterCustomer extends User implements InputCheck {
 
         fileManager.SaveCustomer(_username, _password); // saves the username and password to a JSON file
 
-        return Main.isLoggedIn = true;
+        return true;
     }
 
     private void EnterUsername(Scanner input) {

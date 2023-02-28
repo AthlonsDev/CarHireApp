@@ -10,13 +10,13 @@ public class Main {
         Main main = new Main();
         Scanner scanner = new Scanner(System.in);
 
-        main.mainMenu();
-        main.selectOption(scanner);
+        main.mainMenu(scanner);
+        // main.selectOption(scanner);
       
     }
 
 
-    private void mainMenu() {
+    private void mainMenu(Scanner scanner) {
 
         if(!isLoggedIn) {// main menu if not logged in
             System.out.println("****************Welcome To Car Hire System****************");
@@ -25,6 +25,7 @@ public class Main {
             System.out.println("3. See List Of Cars");
             System.out.println("4. Search For a Car");
             System.out.println("5. Exit");
+            selectOption(scanner);
         }
         else {// main menu if logged in
             System.out.println("****************Welcome To Car Hire System****************");
@@ -32,6 +33,7 @@ public class Main {
             System.out.println("2. See List Of Cars");
             System.out.println("3. Search For a Car");
             System.out.println("4. Exit");
+            selectOption(scanner);
         }
 
         
@@ -45,14 +47,14 @@ public class Main {
             case 1:
                 System.out.println("Register As A New User");
                 RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null);
-                rc.registerCustomer();
-                mainMenu();
+                isLoggedIn = rc.registerCustomer();
+                mainMenu(scanner);
                 break;
             case 2:
                 System.out.println("Login Existing User");
                 LoginCustomer login = new LoginCustomer();
                 login.EnterCredentials();
-                mainMenu();
+                mainMenu(scanner);
                 break;
             case 3:
                 System.out.println("See List Of Cars");
@@ -77,6 +79,8 @@ public class Main {
 
             case 1:
                 System.out.println("Profile");
+                UserProfile up = new UserProfile();
+                up.ProfileMenu();
                 break;
             case 2:
                 System.out.println("See List Of Cars");

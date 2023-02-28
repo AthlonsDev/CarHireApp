@@ -1,18 +1,16 @@
 package FileHandler;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-
 import Models.User;
 
-import java.util.ArrayList;
 
 public class FileUploader {
+
+    private File currentDir = new File("");
+    private String currentPath = currentDir.getAbsolutePath();
     
     public void SaveCustomer(String username, String password) {
         // save the username and password to a JSON file
@@ -26,7 +24,7 @@ public class FileUploader {
         userMap.put("hiredCars", "null");
 
         String fileName = username;
-        String filePath = "C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\";
+        String filePath = currentPath + "\\Files\\";
 
         try {
             FileWriter fileWriter = new FileWriter(filePath + fileName + ".txt");
