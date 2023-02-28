@@ -54,7 +54,7 @@ public class ValidateUser {
         }
     }
 
-    
+    // TODO: pass username instead of boolean
 
 
 }

@@ -12,7 +12,7 @@ public class UserProfile {
         // Read from profile file corresponding to username
         ProfileHandler ph = new ProfileHandler(ViewedCars, ViewedCars, ViewedCars, savedCars, hiredCars);
 
-        ph.getSavedCars();
+        savedCars = ph.getSavedCars();
 
     }
 }
