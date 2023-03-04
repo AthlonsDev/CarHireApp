@@ -45,7 +45,6 @@ public class ValidateUser {
             e.printStackTrace();
         }
         
-        
         if(userMap.containsValue(user) && userMap.containsValue(password)) {
             return true;
         }
@@ -54,7 +53,7 @@ public class ValidateUser {
         }
     }
 
-    // TODO: pass username instead of boolean
+    
 
 
 }

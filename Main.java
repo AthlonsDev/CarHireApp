@@ -1,10 +1,9 @@
 import java.util.Scanner;
 
-import FileHandler.FileUploader;
-
 public class Main {
 
     public static boolean isLoggedIn = false;
+    public static String username = "";
     
     public static void main(String[] args) {
         Main main = new Main();
@@ -46,20 +45,23 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A New User");
-                RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null);
-                isLoggedIn = rc.registerCustomer();
-                mainMenu(scanner);
+                RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null); // pass in null values
+                isLoggedIn = rc.registerCustomer(); // set isLoggedIn to true if registration is successful
+                mainMenu(scanner); // return to main menu
                 break;
             case 2:
                 System.out.println("Login Existing User");
                 LoginCustomer login = new LoginCustomer();
-                login.EnterCredentials();
-                mainMenu(scanner);
+                username = login.EnterCredentials();
+                System.out.println(username);
+                if (username != null)
+                    isLoggedIn = true; // set isLoggedIn to true if login is successful
+                mainMenu(scanner); // return to main menu
                 break;
             case 3:
                 System.out.println("See List Of Cars");
-                CarList cl = new CarList();
-                cl.ShowCars();
+                CarList cl = new CarList(); 
+                cl.ShowCars(); 
                 break;
             case 4:
                 System.out.println("Search For a Car");
@@ -80,7 +82,7 @@ public class Main {
             case 1:
                 System.out.println("Profile");
                 UserProfile up = new UserProfile();
-                up.ProfileMenu();
+                up.ProfileMenu(username);
                 break;
             case 2:
                 System.out.println("See List Of Cars");

@@ -5,7 +5,7 @@ import FileHandler.ValidateUser;
 public class LoginCustomer extends ValidateUser{
     
 
-    public boolean EnterCredentials() {
+    public String EnterCredentials() {
         System.out.println("Login existing User");
         String username = "";
         String password = "";
@@ -20,13 +20,11 @@ public class LoginCustomer extends ValidateUser{
         // validate user
         if(validateUser(username, password)) {
             System.out.println("Login Successful");
-            // set isLoggedIn to true
-            Main.isLoggedIn = true;
-            return true;
+            return username;
         }
         else {
             System.out.println("Login Failed");
-            return false;
+            return null;
         }
         
     }

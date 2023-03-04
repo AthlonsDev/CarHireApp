@@ -7,21 +7,17 @@ import java.util.Scanner;
 
 import Models.User;
 
-public class ProfileHandler extends User {
-    public ProfileHandler(String username, String password, String viewedCars, String savedCars, String hiredCars) {
-        super(username, password, viewedCars, savedCars, hiredCars);
-        //TODO Auto-generated constructor stub
-    }
+public class ProfileHandler {
+
 
     private File currentDir = new File("");
     private String currentPath = currentDir.getAbsolutePath();
 
-    public void readProfile(String user) {
+    public User readProfile(String user) {
 
+        User userObj = new User("username", "password", "", "", "");
 
-        HashMap<String, String> userMap = new HashMap<String, String>();
-
-        // read the file and store the username and password in a hashmap
+        // read from the file in currentPath + "\\Files\\" + user + ".txt"
         try {
             File file = new File(currentPath + "\\Files\\" + user + ".txt");
             Scanner fileReader = new Scanner(file);
@@ -31,7 +27,19 @@ public class ProfileHandler extends User {
                 for(int i = 0; i < dataSplit.length; i++) {
                     System.out.println(dataSplit[i]);
                     String[] dataSplit2 = dataSplit[i].split("=");
-                    userMap.put(dataSplit2[0], dataSplit2[1]);
+                    System.out.println("data from file: " + dataSplit2[0]);
+                    if (dataSplit2[0].equals(" username")) {
+                        userObj.setUsername(dataSplit2[1]);
+                    }
+                    else if (dataSplit2[0].equals(" password")) {
+                        userObj.setPassword(dataSplit2[1]);
+                    }
+                    else if (dataSplit2[0].equals("savedCars")) {
+                        userObj.setSavedCars(dataSplit2[1]);
+                    }
+                    else if (dataSplit2[0].equals("hiredCars")) {
+                        userObj.setHiredCars(dataSplit2[1]);
+                    }
                 }
             }
             fileReader.close();
@@ -39,9 +47,12 @@ public class ProfileHandler extends User {
             e.printStackTrace();
         }
 
-        if(userMap.containsKey("savedCars"))
-            setSavedCars(userMap.get("savedCars"));
-            
+        System.out.println("username from user obj: " + userObj.getUsername());
+        System.out.println("password from user obj: " + userObj.getPassword());
+
+        return userObj;
+        // User userObj = new User(userMap.get("username"), userMap.get("password"), userMap.get("viewedCars"), userMap.get("savedCars"), userMap.get("hiredCars")); // create a new user object with the data from the file
+
 
     }
     
