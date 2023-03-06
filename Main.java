@@ -45,8 +45,7 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A New User");
-                RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null); // pass in null values
-                isLoggedIn = rc.registerCustomer(); // set isLoggedIn to true if registration is successful
+                authController(scanner)
                 mainMenu(scanner); // return to main menu
                 break;
             case 2:
@@ -103,6 +102,19 @@ public class Main {
                 break;
             }
         }
+    }
+
+
+    private boolean authController(Scanner scanner) {
+        
+        System.out.println("Enter Username");
+        username = scanner.nextLine();
+        System.out.println("Enter Password");
+        String password = scanner.nextLine();
+        RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null); // pass in null values
+        isLoggedIn = rc.registerCustomer(username, password); // set isLoggedIn to true if registration is successful
+
+        return isLoggedIn;
     }
 
 }

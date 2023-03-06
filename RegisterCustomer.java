@@ -12,57 +12,48 @@ public class RegisterCustomer extends User implements InputCheck {
 
     }
 
-    String _username = " ";
-    String _password = " ";
     
-    public boolean registerCustomer() {
+    public boolean registerCustomer(String username, String password) {
         System.out.println("Register new User");
 
-        Scanner input = new Scanner(System.in);
+        boolean flag = false;
 
-        // System.out.println("Enter 0 to exit program");
-        // if(input.nextInt() == 0)
-        //     System.exit(0);
-
-        EnterUsername(input);
+        flag = EnterUsername(username);
    
-        EnterPassword(input);
+        flag = EnterPassword(username);
+
         
-        // save the username and password to a JSON file
+        
         FileUploader fileManager = new FileUploader();
 
-        fileManager.SaveCustomer(_username, _password); // saves the username and password to a JSON file
+        fileManager.SaveCustomer(username, password); // saves the username and password to a JSON file
 
         return true;
     }
 
-    private void EnterUsername(Scanner input) {
-        System.out.println("Enter your username: ");
+    private boolean EnterUsername(String username) {
 
-        String username = input.nextLine(); // gets the username from the user
         if (checkUsername(username)) {// checks if the username is at least 8 characters long
             setUsername(username); // sets the username to the username entered by the user
-            _username = username;
+            return true;
         }
         else { 
             System.out.println("Username must be at least 8 characters long");
-            EnterUsername(input);
+            return false;
             
         }
 
     }
 
-    private void EnterPassword(Scanner input) {
+    private boolean EnterPassword(String password) {
 
-        System.out.println("Enter your password: ");
-        String password = input.nextLine(); // gets the password from the user
         if (checkPassword(password)){ // checks if the password is at least 8 characters long and contains numbers and letters
             setPassword(password); // sets the password to the password entered by the user
-            _password = password;
+            return true;
         }
         else {
             System.out.println("Password must be at least 8 characters long");
-            EnterPassword(input);
+            return false;
         }
 
     }
