@@ -45,16 +45,12 @@ public class Main {
 
             case 1:
                 System.out.println("Register As A New User");
-                authController(scanner)
+                authController(scanner); // register new user
                 mainMenu(scanner); // return to main menu
                 break;
             case 2:
                 System.out.println("Login Existing User");
-                LoginCustomer login = new LoginCustomer();
-                username = login.EnterCredentials();
-                System.out.println(username);
-                if (username != null)
-                    isLoggedIn = true; // set isLoggedIn to true if login is successful
+                isLoggedIn = loginController(scanner); // login existing user and set isLoggedIn to true if login is successful
                 mainMenu(scanner); // return to main menu
                 break;
             case 3:
@@ -105,16 +101,52 @@ public class Main {
     }
 
 
-    private boolean authController(Scanner scanner) {
+    private void authController() {
+
+        Scanner sc = new Scanner(System.in);
         
         System.out.println("Enter Username");
-        username = scanner.nextLine();
+        username = sc.nextLine();
+
         System.out.println("Enter Password");
-        String password = scanner.nextLine();
+        String password = sc.nextLine();
+
         RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null); // pass in null values
         isLoggedIn = rc.registerCustomer(username, password); // set isLoggedIn to true if registration is successful
 
+    }
+
+    private void searchCar(Scanner scanner) {
+        System.out.println("Enter Car Make");
+        String make = scanner.nextLine();
+        System.out.println("Enter Car Model");
+        String model = scanner.nextLine();
+        System.out.println("Enter Car Year");
+        String year = scanner.nextLine();
+        System.out.println("Enter Car Color");
+        String color = scanner.nextLine();
+        System.out.println("Enter Car Price");
+        String price = scanner.nextLine();
+        CarList cl = new CarList();
+        // cl.SearchCar(make, model, year, color, price);
+    }
+
+    private boolean loginController() {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Username");
+        String username = sc.nextLine();
+        System.out.println("Enter Password");
+        String password = sc.nextLine();
+        LoginCustomer lc = new LoginCustomer();
+        username = lc.loginCustomer(username, password);
+
+        if (username != null)
+            isLoggedIn = true; // set isLoggedIn to true if login is successful
+
         return isLoggedIn;
+        
     }
 
 }

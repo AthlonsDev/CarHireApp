@@ -20,15 +20,15 @@ public class RegisterCustomer extends User implements InputCheck {
 
         flag = EnterUsername(username);
    
-        flag = EnterPassword(username);
+        flag = EnterPassword(password);
 
-        
-        
-        FileUploader fileManager = new FileUploader();
+        if (flag) {
+            FileUploader fileManager = new FileUploader();
 
-        fileManager.SaveCustomer(username, password); // saves the username and password to a JSON file
+            fileManager.SaveCustomer(username, password); // saves the username and password to a JSON file
+        }
 
-        return true;
+        return flag;
     }
 
     private boolean EnterUsername(String username) {
@@ -67,13 +67,13 @@ public class RegisterCustomer extends User implements InputCheck {
             if (isValid) {
                 // Username already present -> go to login
                 System.out.println("username already taken");
-                LoginCustomer login = new LoginCustomer();
-                login.EnterCredentials();
+                return false;
             }
-            return true;
         } else {
             return false;
         }
+        
+        return false;
     }
 
     public boolean checkPassword(String password) {

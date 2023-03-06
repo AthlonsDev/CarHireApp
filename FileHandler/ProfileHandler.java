@@ -27,6 +27,10 @@ public class ProfileHandler {
                 for(int i = 0; i < dataSplit.length; i++) {
                     System.out.println(dataSplit[i]);
                     String[] dataSplit2 = dataSplit[i].split("=");
+                    // if  space is found then replace with a comma
+                    if(dataSplit2[1].contains(" ")) {
+                        dataSplit2[1] = dataSplit2[1].replace(" ", ", ");
+                    }
                     System.out.println("data from file: " + dataSplit2[0]);
                     if (dataSplit2[0].equals(" username")) {
                         userObj.setUsername(dataSplit2[1]);
@@ -34,7 +38,7 @@ public class ProfileHandler {
                     else if (dataSplit2[0].equals(" password")) {
                         userObj.setPassword(dataSplit2[1]);
                     }
-                    else if (dataSplit2[0].equals("savedCars")) {
+                    else if (dataSplit2[0].equals(" savedCars")) {
                         userObj.setSavedCars(dataSplit2[1]);
                     }
                     else if (dataSplit2[0].equals("hiredCars")) {
@@ -47,13 +51,9 @@ public class ProfileHandler {
             e.printStackTrace();
         }
 
-        System.out.println("username from user obj: " + userObj.getUsername());
+        System.out.println("saved cars from user obj: " + userObj.getSavedCars());
         System.out.println("password from user obj: " + userObj.getPassword());
 
         return userObj;
-        // User userObj = new User(userMap.get("username"), userMap.get("password"), userMap.get("viewedCars"), userMap.get("savedCars"), userMap.get("hiredCars")); // create a new user object with the data from the file
-
-
-    }
     
 }
