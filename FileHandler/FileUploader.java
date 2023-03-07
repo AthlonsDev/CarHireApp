@@ -36,6 +36,25 @@ public class FileUploader {
         
     }
 
+    public void saveCar(String model, String make, String Year, String Hired) {
+        HashMap<String, String> carMap = new HashMap<String, String>();
+        carMap.put("model", model);
+        carMap.put("make", make);
+        carMap.put("year", Year);
+        carMap.put("hired", Hired);
+
+        String fileName = model;
+        String filePath = currentPath + "\\Files\\";
+
+        try {
+            FileWriter fileWriter = new FileWriter(filePath + fileName + ".txt");
+            fileWriter.write(carMap.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

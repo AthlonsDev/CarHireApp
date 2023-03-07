@@ -38,7 +38,7 @@ public class RegisterCustomer extends User implements InputCheck {
             return true;
         }
         else { 
-            System.out.println("Username must be at least 8 characters long");
+            System.out.println("Username Invalid");
             return false;
             
         }
@@ -68,12 +68,12 @@ public class RegisterCustomer extends User implements InputCheck {
                 // Username already present -> go to login
                 System.out.println("username already taken");
                 return false;
+            } else {
+                return true;
             }
         } else {
             return false;
         }
-        
-        return false;
     }
 
     public boolean checkPassword(String password) {

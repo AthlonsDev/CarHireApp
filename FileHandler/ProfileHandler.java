@@ -55,5 +55,6 @@ public class ProfileHandler {
         System.out.println("password from user obj: " + userObj.getPassword());
 
         return userObj;
+    }
     
 }
