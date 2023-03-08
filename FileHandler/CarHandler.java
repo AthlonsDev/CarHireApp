@@ -2,7 +2,9 @@ package FileHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import Models.Car;
@@ -35,5 +37,23 @@ public class CarHandler {
         }
     }
 
-    
+    public List<String> readCSV() {
+        List<String> cars = new ArrayList<>();
+
+        // read CSV file with multiple lines
+        File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\Cars.csv");
+        try {
+            Scanner fileReader = new Scanner(file);
+            while(fileReader.hasNextLine()) {
+                String data = fileReader.nextLine();
+                // put every line in a list
+                cars.add(data);
+                
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return cars;
+    }
+
 }

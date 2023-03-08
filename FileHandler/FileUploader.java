@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+
+import Models.Car;
 import Models.User;
 
 
@@ -36,23 +39,23 @@ public class FileUploader {
         
     }
 
-    public void saveCar(String model, String make, String Year, String Hired) {
-        HashMap<String, String> carMap = new HashMap<String, String>();
-        carMap.put("model", model);
-        carMap.put("make", make);
-        carMap.put("year", Year);
-        carMap.put("hired", Hired);
-
-        String fileName = model;
+    public void saveCar(List<Car> cars) {
+        // save the cars list to a CSV file
+        String fileName = "Cars";
         String filePath = currentPath + "\\Files\\";
-
         try {
-            FileWriter fileWriter = new FileWriter(filePath + fileName + ".txt");
-            fileWriter.write(carMap.toString());
+            FileWriter fileWriter = new FileWriter(filePath + fileName + ".csv");
+            for (Car car : cars) {
+                fileWriter.write(car.getMake() + ", " + car.getModel() + ", " + car.getPrice() + ", " + car.isHired() + "\n");
+            }
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void AddCarsToFile() {
+        
     }
 
 }

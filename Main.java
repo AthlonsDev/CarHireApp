@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static boolean isLoggedIn = false;
     public static String username = "";
+    
     
     public static void main(String[] args) {
         Main main = new Main();
@@ -39,6 +42,9 @@ public class Main {
     }
 
     private void selectRegMenu() {
+        // empty list<String>
+        List<String> cl = new ArrayList<String>();
+
         Scanner scanner = new Scanner(System.in);
 
         if(!isLoggedIn) {
@@ -56,10 +62,12 @@ public class Main {
                 break;
             case 3:
                 System.out.println("See List Of Cars");
-                showCars(); 
+                cl = showCars(); 
+                mainMenu(); // return to main menu
                 break;
             case 4:
                 System.out.println("Search For a Car");
+                searchCar(cl);
                 break;
             case 5:
                 System.out.println("Exit");
@@ -71,7 +79,6 @@ public class Main {
                 break;
             }
         }
-        scanner.close();
     }
 
     private void selectLogMenu() {
@@ -100,7 +107,6 @@ public class Main {
                 System.out.println("Invalid Selection");
                 break;
             }
-        scanner.close();
     }
 
 
@@ -117,7 +123,6 @@ public class Main {
         RegisterCustomer rc = new RegisterCustomer(null, null, null, null, null); // pass in null values
         isLoggedIn = rc.registerCustomer(username, password); // set isLoggedIn to true if registration is successful
 
-        sc.close();
     }
 
 
@@ -135,30 +140,30 @@ public class Main {
         if (username != null)
             isLoggedIn = true; // set isLoggedIn to true if login is successful
 
-        sc.close();
         return isLoggedIn;
         
     }
 
-    private void showCars() {
+    private List<String> showCars() {
+        // get a list of all cars
         CarList cl = new CarList();
-        cl.ShowCars();
+        List<String> carList = cl.showCars();
+
+        return carList;
     }
 
     
-    private void searchCar(Scanner scanner) {
-        System.out.println("Enter Car Make");
-        String make = scanner.nextLine();
-        System.out.println("Enter Car Model");
-        String model = scanner.nextLine();
-        System.out.println("Enter Car Year");
-        String year = scanner.nextLine();
-        System.out.println("Enter Car Color");
-        String color = scanner.nextLine();
-        System.out.println("Enter Car Price");
-        String price = scanner.nextLine();
-        CarList cl = new CarList();
-        // cl.SearchCar(make, model, year, color, price);
+    private void searchCar(List<String> carList) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Search By Make");
+        String searchBy = scanner.nextLine();
+        SearchCars sc = new SearchCars();
+        System.out.println(sc.searchCar(carList, searchBy));
+
+        System.out.println("Would you like to book this car? (Y/N)");
+        String book = scanner.nextLine();
+        
     }
 
 }
