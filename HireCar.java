@@ -1,10 +1,15 @@
+import FileHandler.CarHandler;
+
 public class HireCar {
     
-    public boolean hire(String carToHire) {
+    public boolean hireCar(String carToHire) {
 
-        // TODO: find car and hire
-        SearchCars searchCars = new SearchCars();
+        boolean isHired = false;
 
-        return true;
+        CarHandler carHandler = new CarHandler();
+
+        isHired = carHandler.updateCar(carToHire);
+
+        return isHired;
     }
 }

@@ -6,7 +6,7 @@ public class Main {
 
     public static boolean isLoggedIn = false;
     public static String username = "";
-    
+    List<String> carList = new ArrayList<>();
     
     public static void main(String[] args) {
         Main main = new Main();
@@ -42,8 +42,6 @@ public class Main {
     }
 
     private void selectRegMenu() {
-        // empty list<String>
-        List<String> cl = new ArrayList<String>();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -62,12 +60,13 @@ public class Main {
                 break;
             case 3:
                 System.out.println("See List Of Cars");
-                cl = showCars(); 
+                carList = showCars(); 
                 mainMenu(); // return to main menu
                 break;
             case 4:
                 System.out.println("Search For a Car");
-                searchCar(cl);
+                System.out.println("list: " + carList);
+                findCar(carList);
                 break;
             case 5:
                 System.out.println("Exit");
@@ -147,22 +146,52 @@ public class Main {
     private List<String> showCars() {
         // get a list of all cars
         CarList cl = new CarList();
-        List<String> carList = cl.showCars();
+        carList = cl.showCars();
+
+        for (String car : carList) {
+            System.out.println(car);
+        }
 
         return carList;
     }
 
     
-    private void searchCar(List<String> carList) {
+    private void findCar(List<String> carList) {
+
+        if (carList.isEmpty()) {
+            // if carList is empty, get a list of all cars
+            carList = showCars();
+        }
+
+
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Search By Make");
+        System.out.println("Enter Make of Car to Search For");
         String searchBy = scanner.nextLine();
+        
         SearchCars sc = new SearchCars();
-        System.out.println(sc.searchCar(carList, searchBy));
+        String searchResult = sc.searchForCar(carList, searchBy);
+        System.out.println(searchResult);
 
         System.out.println("Would you like to book this car? (Y/N)");
         String book = scanner.nextLine();
+
+        if(book.equals("Y") || book.equals("y") || book.equals("Yes") || book.equals("yes")) {
+            // book car
+            HireCar hc = new HireCar();
+            if (hc.hireCar(searchResult)) {
+                System.out.println("Car Booked");
+            }
+            else {
+                System.out.println("Car Not Available");
+                mainMenu();
+            }
+            
+        }
+        else {
+            // return to main menu
+            mainMenu();
+        }
         
     }
 

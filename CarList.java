@@ -1,11 +1,6 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import FileHandler.CarHandler;
-import FileHandler.FileUploader;
-import Models.Car;
 
 public class CarList {
 
@@ -36,15 +31,8 @@ public class CarList {
         CarHandler carHandler = new CarHandler();
         carList = carHandler.readCSV();
 
-        for (String car : carList) {
-            System.out.println(car);
-        }
-
         return carList;
 
-   
-        
-    
     }
     
 }

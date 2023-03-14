@@ -6,7 +6,7 @@ public class Car {
     String make;  // make of the car
     String model; // model of the car
     String year;  // year of the car
-    boolean hired; // if the car is hired
+    String hired; // if the car is hired
     String price; // price of the car
     // String color; // color of the car
     // String fuel;  // fuel type of the car
@@ -18,11 +18,11 @@ public class Car {
     // String image; // image of the car
 
     // Constructor
-    public Car(String make, String model, String year, String price, String color, String fuel, String transmission,
-            String engine, String body, String mileage, String description, String image) {
+    public Car(String make, String model, String price, String hired)
+    {
         this.make = make;
         this.model = model;
-        this.year = year;
+        // this.year = year;
         this.hired = hired;
         this.price = price;
         // this.color = color;
@@ -62,11 +62,11 @@ public class Car {
         this.year = year;
     }
 
-    public boolean isHired() {
+    public String isHired() {
         return hired;
     }
 
-    public void setHired(boolean hired) {
+    public void setHired(String hired) {
         this.hired = hired;
     }
 
