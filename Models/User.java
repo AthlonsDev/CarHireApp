@@ -5,15 +5,13 @@ public class User {
     // create a model object for the user
     private String username;
     private String password;
-    private String viewedCars;
     private String savedCars;
     private String hiredCars;
 
     // Constructor 
-    public User(String username, String password, String viewedCars, String savedCars, String hiredCars) {
+    public User(String username, String password, String savedCars, String hiredCars) {
         this.username = username;
         this.password = password;
-        this.viewedCars = viewedCars;
         this.savedCars = savedCars;
         this.hiredCars = hiredCars;
     }
@@ -32,14 +30,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getViewedCars() {
-        return viewedCars;
-    }
-
-    public void setViewedCars(String viewedCars) {
-        this.viewedCars = viewedCars;
     }
 
     public String getSavedCars() {

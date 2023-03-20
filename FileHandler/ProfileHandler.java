@@ -15,7 +15,7 @@ public class ProfileHandler {
 
     public User readProfile(String user) {
 
-        User userObj = new User("username", "password", "", "", "");
+        User userObj = new User("username", "password", "", "");
 
         // read from the file in currentPath + "\\Files\\" + user + ".txt"
         try {

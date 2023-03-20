@@ -1,4 +1,5 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 import FileHandler.FileUploader;
 import FileHandler.ValidateUser;
@@ -7,8 +8,8 @@ import Models.User;
 
 public class RegisterCustomer extends User implements InputCheck {
 
-    public RegisterCustomer(String username, String password, String viewedCars, String savedCars, String hiredCars) {
-        super(username, password, viewedCars, savedCars, hiredCars);
+    public RegisterCustomer(String username, String password, String savedCars, String hiredCars) {
+        super(username, password, savedCars, hiredCars);
 
     }
 
@@ -25,7 +26,13 @@ public class RegisterCustomer extends User implements InputCheck {
         if (flag) {
             FileUploader fileManager = new FileUploader();
 
-            fileManager.SaveCustomer(username, password); // saves the username and password to a JSON file
+            User user = new User(username, password, "0", "0");
+
+            List<User> userList = new ArrayList<>();
+
+            userList.add(user);
+
+            fileManager.SaveCustomer(userList); // saves the username and password to a JSON file
         }
 
         return flag;

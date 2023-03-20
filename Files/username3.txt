@@ -1,1 +1,0 @@
-{viewedCars=null, password=password1234, hiredCars=null, username=username3, savedCars=null}

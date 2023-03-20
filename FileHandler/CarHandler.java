@@ -20,13 +20,13 @@ public class CarHandler {
         // update value
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).contains(update)) {
-                System.out.println("Car found + " + cars.get(i));
+                System.out.println("Car found " + cars.get(i)); // debug
                 // replace  "Available" with "Unavailable"
-                if(update.contains("Available"))
-                    update = update.replace("Available", "Unavailable");
+                if(update.contains("Available")) // if car is available
+                    update = update.replace("Available", "Unavailable");  // change to unavailable
                 else
-                    return false;
-                cars.set(i, update);
+                    return false; // car is already unavailable
+                cars.set(i, update); // update the list with the new value
             }
         }
 
