@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import FileHandler.FileUploader;
+import FileHandler.UsersHandler;
 import FileHandler.ValidateUser;
 import Models.User;
 
@@ -24,7 +25,7 @@ public class RegisterCustomer extends User implements InputCheck {
         flag = EnterPassword(password);
 
         if (flag) {
-            FileUploader fileManager = new FileUploader();
+            UsersHandler userHandler = new UsersHandler();
 
             User user = new User(username, password, "0", "0");
 
@@ -32,7 +33,7 @@ public class RegisterCustomer extends User implements InputCheck {
 
             userList.add(user);
 
-            fileManager.SaveCustomer(userList); // saves the username and password to a JSON file
+            userHandler.handleUsers(userList); // saves the username and password to a CSV file
         }
 
         return flag;

@@ -19,52 +19,21 @@ public class FileUploader {
     
     public void SaveCustomer(List<User> users) {
 
-
-        // create an empty file
-        String fileName = "Users";
-        String filePath = currentPath + "\\Files\\";
+        // save the users list to a CSV file
         try {
-            FileWriter fileWriter = new FileWriter(filePath + fileName + ".csv");
+            FileWriter fileWriter = new FileWriter(currentDir + "\\Files\\" + "Users.csv");
+            for (User user : users) {
+                fileWriter.write(user.getUsername() + ", " + user.getPassword() + ", " + user.getSavedCars() + ", " + user.getHiredCars() + "\n");
+            }
             fileWriter.close();
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
-
+        
     }
 
-    public void updateCustomer(List<User> users) {
-        List<String> usersList = readList();
-        // List<Car> user = new ArrayList<>();
-        for (String u : usersList) {
-            String[] userDetails = u.split(",");
-            User c = new User(userDetails[0], userDetails[1], userDetails[2], userDetails[3]);
-            users.add(c);
-        }
-        // save the users list to a CSV file
-        SaveCustomer(users);
 
-    }
 
-    private List<String> readList() {
-
-        List<String> usersList = new ArrayList<>();
-        File file = new File(currentPath + "\\Files\\" + "Users.csv");
-        try (// read from the file and add the new user to the list
-        Scanner fileReader = new Scanner(file)) {
-            while(fileReader.hasNextLine()) {
-                String data = fileReader.nextLine();
-                // put every line in a list
-                usersList.add(data);
-            }
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return usersList;
-
-    }
 
     public void saveCar(List<Car> cars) {
         // save the cars list to a CSV file

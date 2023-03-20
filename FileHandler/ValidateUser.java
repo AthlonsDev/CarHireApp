@@ -15,7 +15,7 @@ public class ValidateUser {
     public boolean validateUsername(String user) {
 
         // check if file exists
-        File file = new File(currentPath + "\\Files\\" + user + ".csv");
+        File file = new File(currentPath + "\\Files\\" + "Users.csv");
         if(file.exists()) {
             // username exists
             return true;
@@ -32,7 +32,7 @@ public class ValidateUser {
         List<String> users = new ArrayList<>();
 
         // read CSV file with multiple lines
-        File file = new File(currentPath + "\\Files\\" + user + ".csv");
+        File file = new File(currentPath + "\\Files\\" + "Users.csv");
         try {
             Scanner fileReader = new Scanner(file);
             while(fileReader.hasNextLine()) {

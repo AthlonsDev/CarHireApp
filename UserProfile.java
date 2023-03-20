@@ -27,7 +27,7 @@ public class UserProfile {
 
         // create a tuple of the user object
         System.out.println("Username \t Password \t Saved Cars \t Hired Cars \t Viewed Cars");
-        System.out.println(user.getUsername() + "\t" + user.getPassword() + "\t" + user.getSavedCars().length() + "\t" + user.getHiredCars().length() + "\t" + user.getViewedCars().length());
+        System.out.println(user.getUsername() + "\t" + user.getPassword() + "\t" + user.getSavedCars().length() + "\t" + user.getHiredCars().length() + "\t".length());
 
         // System.out.println("Username: " + user.getUsername());
         // System.out.println("Password: " + user.getPassword());
