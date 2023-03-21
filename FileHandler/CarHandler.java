@@ -25,14 +25,12 @@ public class CarHandler {
                 if(update.contains("Available")) { // if car is available
                     update = update.replace("Available", "Unavailable");  // change to unavailable
                     // get current time
-                    // get Local Time as start of booking time
-                    LocalDate today = LocalDate.now();
-                    System.out.println("from: " + today);
-                    //add days to the current time as end of booking date
-                    LocalDate endBooking = today.plusDays(days);
+                    LocalDate today = LocalDate.now(); // get Local Time as start of booking time
+                    System.out.println("from: " + today); 
+                    LocalDate endBooking = today.plusDays(days); // add days to the current time as end of booking date
                     System.out.println("to: " + endBooking);
-                    update = update.replace("no start time", today.toString());
-                    update = update.replace("no end time", endBooking.toString());
+                    update = update.replace("no start time", today.toString()); // replace no start time with start time
+                    update = update.replace("no end time", endBooking.toString()); // replace no end time with end time
                 }
                 else
                     return false; // car is already unavailable
