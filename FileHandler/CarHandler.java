@@ -3,15 +3,15 @@ package FileHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.time.*;
 
 import Models.Car;
 
 public class CarHandler {
 
-    public boolean updateCar(String update) {
+    public boolean updateCar(String update, int days) {
         List<String> cars = new ArrayList<>();
         // update file with new value
         // read file
@@ -22,8 +22,18 @@ public class CarHandler {
             if (cars.get(i).contains(update)) {
                 System.out.println("Car found " + cars.get(i)); // debug
                 // replace  "Available" with "Unavailable"
-                if(update.contains("Available")) // if car is available
+                if(update.contains("Available")) { // if car is available
                     update = update.replace("Available", "Unavailable");  // change to unavailable
+                    // get current time
+                    // get Local Time as start of booking time
+                    LocalDate today = LocalDate.now();
+                    System.out.println("from: " + today);
+                    //add days to the current time as end of booking date
+                    LocalDate endBooking = today.plusDays(days);
+                    System.out.println("to: " + endBooking);
+                    update = update.replace("no start time", today.toString());
+                    update = update.replace("no end time", endBooking.toString());
+                }
                 else
                     return false; // car is already unavailable
                 cars.set(i, update); // update the list with the new value
@@ -33,7 +43,7 @@ public class CarHandler {
         List<Car> carList = new ArrayList<>();
         for (String car : cars) {
             String[] carDetails = car.split(",");
-            Car c = new Car(carDetails[0], carDetails[1], carDetails[2], carDetails[3]);
+            Car c = new Car(carDetails[0], carDetails[1], carDetails[2], carDetails[3], carDetails[4], carDetails[5], carDetails[6]);
             carList.add(c);
         }
         
@@ -47,10 +57,14 @@ public class CarHandler {
     }
 
     public List<String> readCSV() {
+
+        File currentDir = new File("");
+        String currentPath = currentDir.getAbsolutePath();
+
         List<String> cars = new ArrayList<>();
 
         // read CSV file with multiple lines
-        File file = new File("C:\\Users\\athlo\\Desktop\\Uni\\SoftDev\\AdvSoft - Assignment\\Part-1\\Files\\Cars.csv");
+        File file = new File(currentPath + "\\Files\\" + "Cars.csv");
         try {
             Scanner fileReader = new Scanner(file);
             while(fileReader.hasNextLine()) {

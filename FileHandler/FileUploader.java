@@ -21,7 +21,7 @@ public class FileUploader {
 
         // save the users list to a CSV file
         try {
-            FileWriter fileWriter = new FileWriter(currentDir + "\\Files\\" + "Users.csv");
+            FileWriter fileWriter = new FileWriter(currentPath + "\\Files\\" + "Users.csv");
             for (User user : users) {
                 fileWriter.write(user.getUsername() + ", " + user.getPassword() + ", " + user.getSavedCars() + ", " + user.getHiredCars() + "\n");
             }
@@ -33,8 +33,6 @@ public class FileUploader {
     }
 
 
-
-
     public void saveCar(List<Car> cars) {
         // save the cars list to a CSV file
         String fileName = "Cars";
@@ -42,16 +40,12 @@ public class FileUploader {
         try {
             FileWriter fileWriter = new FileWriter(filePath + fileName + ".csv");
             for (Car car : cars) {
-                fileWriter.write(car.getMake() + ", " + car.getModel() + ", " + car.getPrice() + ", " + car.isHired() + "\n");
+                fileWriter.write(car.getMake() + ", " + car.getModel() + ", " + car.getPrice() + ", " + car.getYear() + ", " + car.isHired() + ", " + car.getStartTime() + ", " + car.getEndTime() + "\n");
             }
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void AddCarsToFile() {
-        
     }
 
 }

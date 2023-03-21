@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,10 +10,18 @@ public class Main {
     List<String> carList = new ArrayList<>();
     
     public static void main(String[] args) {
+        // create list of cars
+        CarList car = new CarList();
+        car.startCarList();
+
+ 
+
         Main main = new Main();
 
         main.mainMenu();
         // main.selectOption(scanner);
+
+    //   TODO: When booking register date and time of booking and duration of booking
       
     }
 
@@ -177,10 +186,14 @@ public class Main {
         String book = scanner.nextLine();
 
         if(book.equals("Y") || book.equals("y") || book.equals("Yes") || book.equals("yes")) {
-            // book car
+            
+            System.out.print("How may days would you like to hire this " + searchBy + " for?");
+            int days = scanner.nextInt();
+
+            //book car
             HireCar hc = new HireCar();
-            if (hc.hireCar(searchResult)) {
-                System.out.println("Car Booked");
+            if (hc.hireCar(searchResult, days)) {
+                System.out.println("Car Booked for " + days + " days");
             }
             else {
                 System.out.println("Car Not Available");

@@ -1,5 +1,7 @@
 package Models;
 
+import java.security.Timestamp;
+
 public class Car {
 
     
@@ -8,34 +10,22 @@ public class Car {
     String year;  // year of the car
     String hired; // if the car is hired
     String price; // price of the car
-    // String color; // color of the car
-    // String fuel;  // fuel type of the car
-    // String transmission; // transmission type of the car
-    // String engine; // engine type of the car
-    // String body; // body type of the car
-    // String mileage; // mileage of the car
-    // String description; // description of the car
-    // String image; // image of the car
+    String bookingFrom; // time the booking starts
+    String bookingTo; // time the booking ends
 
     // Constructor
-    public Car(String make, String model, String price, String hired)
+    public Car(String make, String model, String year, String price, String hired, String bookingFrom, String bookingTo)
     {
         this.make = make;
         this.model = model;
-        // this.year = year;
+        this.year = year;
         this.hired = hired;
         this.price = price;
-        // this.color = color;
-        // this.fuel = fuel;
-        // this.transmission = transmission;
-        // this.engine = engine;
-        // this.body = body;
-        // this.mileage = mileage;
-        // this.description = description;
-        // this.image = image;
-    }
+        this.bookingFrom = bookingFrom;
+        this.bookingTo = bookingTo;
 
-    public Car(String string, String string2, String string3) {
+
+
     }
 
     public String getMake() {
@@ -78,6 +68,20 @@ public class Car {
         this.price = price;
     }
 
-    
+    public String getStartTime() {
+        return bookingFrom;
+    }
+
+    public void setStartTime(String bookingFrom) {
+        this.bookingFrom = bookingFrom;
+    }
+
+    public String getEndTime() {
+        return bookingTo;
+    }
+
+    public void setEndTime(String bookingTo) {
+        this.bookingTo = bookingTo;
+    }
     
 }

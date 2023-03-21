@@ -1,5 +1,5 @@
-Audi,   A4,   $2000,   Unavailable
-BMW,   M3,   $2500,   Available
-Mercedes,   C200,   $2800,   Available
-Toyota,   Corolla,   $1500,   Available
-Volkswagen,   Golf,   $1200,   Available
+Audi,  A4,  2019,  $2000,  Available,  no start time,  no end time
+BMW,  M3,  2019,  $2500,  Unavailable,  2023-03-21,  2023-04-05
+Mercedes,  C200,  2019,  $2800,  Available,  no start time,  no end time
+Toyota,  Corolla,  2019,  $1500,  Available,  no start time,  no end time
+Volkswagen,  Golf,  2019,  $1200,  Available,  no start time,  no end time
