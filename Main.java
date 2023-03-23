@@ -14,14 +14,8 @@ public class Main {
         CarList car = new CarList();
         car.startCarList();
 
- 
-
         Main main = new Main();
-
         main.mainMenu();
-        // main.selectOption(scanner);
-
-    //   TODO: When booking register date and time of booking and duration of booking
       
     }
 
@@ -34,8 +28,7 @@ public class Main {
             System.out.println("1. Register");
             System.out.println("2. Login");
             System.out.println("3. See List Of Cars");
-            System.out.println("4. Search For a Car");
-            System.out.println("5. Exit");
+            System.out.println("4. Exit");
             selectRegMenu();
         }
         else {// main menu if logged in
@@ -73,11 +66,6 @@ public class Main {
                 mainMenu(); // return to main menu
                 break;
             case 4:
-                System.out.println("Search For a Car");
-                System.out.println("list: " + carList);
-                findCar(carList);
-                break;
-            case 5:
                 System.out.println("Exit");
                 // exit program
                 System.exit(0);
@@ -105,6 +93,8 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Search For a Car");
+                System.out.println("list: " + carList);
+                findCar(carList);
                 break;
             case 4:
                 System.out.println("Exit");
