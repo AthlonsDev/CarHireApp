@@ -24,8 +24,6 @@ public class Car {
         this.bookingFrom = bookingFrom;
         this.bookingTo = bookingTo;
 
-
-
     }
 
     public String getMake() {

@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
-import FileHandler.FileUploader;
 import FileHandler.UsersHandler;
 import FileHandler.ValidateUser;
 import Models.User;
@@ -60,7 +58,7 @@ public class RegisterCustomer extends User implements InputCheck {
             return true;
         }
         else {
-            System.out.println("Password must be at least 8 characters long");
+            System.out.println("Password must be at least 8 characters long and contain numbers and letters");
             return false;
         }
 
@@ -72,7 +70,7 @@ public class RegisterCustomer extends User implements InputCheck {
             // checks if the username is already taken
             ValidateUser vu = new ValidateUser();
             boolean isValid = vu.validateUsername(username);
-            if (isValid) {
+            if (!isValid) {
                 // Username already present -> go to login
                 System.out.println("username already taken");
                 return false;
@@ -94,5 +92,6 @@ public class RegisterCustomer extends User implements InputCheck {
 
         return false;
     }
+
 
 }

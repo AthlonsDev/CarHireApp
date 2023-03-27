@@ -47,6 +47,8 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+        checkInputInt(scanner); // check if input is an integer
+
         if(!isLoggedIn) {
             switch (scanner.nextInt()) {
 
@@ -79,6 +81,8 @@ public class Main {
 
     private void selectLogMenu() {
         Scanner scanner = new Scanner(System.in);
+
+        checkInputInt(scanner);
 
         switch (scanner.nextInt()) {
 
@@ -197,5 +201,14 @@ public class Main {
         }
         
     }
+
+    private void checkInputInt(Scanner scanner) {
+        //catch exception if user enters a string
+        while(!scanner.hasNextInt()) { // while input is not an integer
+            System.out.println("Invalid Selection"); // print error message
+            scanner.next(); 
+        } 
+    }
+
 
 }
