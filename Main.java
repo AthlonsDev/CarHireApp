@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import FileHandler.CarHandler;
+import Models.Car;
+
 public class Main {
 
     public static boolean isLoggedIn = false;
@@ -47,7 +50,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        checkInputInt(scanner); // check if input is an integer
+        checkInput(scanner); // check if input is an integer
 
         if(!isLoggedIn) {
             switch (scanner.nextInt()) {
@@ -82,7 +85,7 @@ public class Main {
     private void selectLogMenu() {
         Scanner scanner = new Scanner(System.in);
 
-        checkInputInt(scanner);
+        checkInput(scanner);
 
         switch (scanner.nextInt()) {
 
@@ -166,27 +169,50 @@ public class Main {
             carList = showCars();
         }
 
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter Make of Car to Search For");
         String searchBy = scanner.nextLine();
         
         SearchCars sc = new SearchCars();
-        String searchResult = sc.searchForCar(carList, searchBy);
-        System.out.println(searchResult);
+        Car searchResult = sc.searchForCar(carList, searchBy);
+        System.out.println(searchResult.getMake() + " " + searchResult.getModel());
+
+        // Check if car is available
+        if(searchResult.isHired().equals("Available")) {
+            System.out.println("This Car is Available");
+            bookCar(searchResult);
+        }
+        else {
+            System.out.println("This Car is not Available Until " + searchResult.getEndTime());
+
+            mainMenu();
+        }
+        
+    }
+
+    private void bookCar(Car searchResult) {
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println("Would you like to book this car? (Y/N)");
         String book = scanner.nextLine();
 
         if(book.equals("Y") || book.equals("y") || book.equals("Yes") || book.equals("yes")) {
             
-            System.out.print("How may days would you like to hire this " + searchBy + " for?");
+            System.out.print("How may days would you like to hire this " + searchResult.getMake() + " for?");
             int days = scanner.nextInt();
+            checkInput(scanner);
+
+            // check price per day of car and calculate total price
+            String priceString = searchResult.getPrice();
+            priceString = priceString.substring(0, priceString.indexOf("/"));
+            int price = Integer.parseInt(priceString);
+            double totalPrice = price * days;
+            System.out.println("Total Price: " + totalPrice);
 
             //book car
             HireCar hc = new HireCar();
-            if (hc.hireCar(searchResult, days)) {
+            if (hc.hireCar(searchResult.toString(), days)) {
                 System.out.println("Car Booked for " + days + " days");
             }
             else {
@@ -199,10 +225,9 @@ public class Main {
             // return to main menu
             mainMenu();
         }
-        
     }
 
-    private void checkInputInt(Scanner scanner) {
+    private void checkInput(Scanner scanner) {
         //catch exception if user enters a string
         while(!scanner.hasNextInt()) { // while input is not an integer
             System.out.println("Invalid Selection"); // print error message
