@@ -37,7 +37,7 @@ public class FileUploader {
         try {
             FileWriter fileWriter = new FileWriter(filePath + fileName + ".csv");
             for (Car car : cars) {
-                fileWriter.write(car.getMake() + ", " + car.getModel() + ", " + car.getPrice() + ", " + car.getYear() + ", " + car.isHired() + ", " + car.getStartTime() + ", " + car.getEndTime() + "\n");
+                fileWriter.write(car.getMake() + ", " + car.getModel() + ", " + car.getYear() + ", " + car.getPrice() + ", " + car.isHired() + ", " + car.getStartTime() + ", " + car.getEndTime() + "\n");
             }
             fileWriter.close();
         } catch (IOException e) {

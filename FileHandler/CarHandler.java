@@ -11,12 +11,14 @@ import Models.Car;
 
 public class CarHandler {
 
-    public boolean updateCar(String update, int days) {
+    public boolean updateCar(Car car, int days) {
         List<String> cars = new ArrayList<>();
         // update file with new value
         // read file
         cars = readCSV();
 
+        String update = car.getMake() + "," + car.getModel() + "," + car.getYear() + "," + car.getPrice() + "," + car.isHired() + "," + car.getStartTime() + "," + car.getEndTime();
+        System.out.println("Update: " + update);
         // update value
         for (int i = 0; i < cars.size(); i++) {
             if (cars.get(i).contains(update)) {
@@ -39,8 +41,8 @@ public class CarHandler {
         }
 
         List<Car> carList = new ArrayList<>();
-        for (String car : cars) {
-            String[] carDetails = car.split(",");
+        for (String car_ : cars) {
+            String[] carDetails = car_.split(",");
             Car c = new Car(carDetails[0], carDetails[1], carDetails[2], carDetails[3], carDetails[4], carDetails[5], carDetails[6]);
             carList.add(c);
         }

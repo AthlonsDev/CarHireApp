@@ -75,6 +75,9 @@ public class Main {
                 // exit program
                 System.exit(0);
                 break;
+            case 5:
+                System.out.println("Find Car(For Debug Purposes)");
+                findCar(carList);
             default:
                 System.out.println("Invalid Selection");
                 break;
@@ -176,10 +179,11 @@ public class Main {
         
         SearchCars sc = new SearchCars();
         Car searchResult = sc.searchForCar(carList, searchBy);
+        System.out.println(searchResult.toString());
         System.out.println(searchResult.getMake() + " " + searchResult.getModel());
 
         // Check if car is available
-        if(searchResult.isHired().equals("Available")) {
+        if(searchResult.isHired().equals(" Available")) {
             System.out.println("This Car is Available");
             bookCar(searchResult);
         }
@@ -199,21 +203,23 @@ public class Main {
 
         if(book.equals("Y") || book.equals("y") || book.equals("Yes") || book.equals("yes")) {
             
-            System.out.print("How may days would you like to hire this " + searchResult.getMake() + " for?");
+            System.out.println("How many days would you like to hire this " + searchResult.getMake() + " for?");
             int days = scanner.nextInt();
-            checkInput(scanner);
+            // checkInput();
 
             // check price per day of car and calculate total price
             String priceString = searchResult.getPrice();
-            priceString = priceString.substring(0, priceString.indexOf("/"));
+            priceString = priceString.substring(2, priceString.indexOf("/"));
             int price = Integer.parseInt(priceString);
+            System.out.println(price);
             double totalPrice = price * days;
             System.out.println("Total Price: " + totalPrice);
 
             //book car
             HireCar hc = new HireCar();
-            if (hc.hireCar(searchResult.toString(), days)) {
+            if (hc.hireCar(searchResult, days)) {
                 System.out.println("Car Booked for " + days + " days");
+                mainMenu();
             }
             else {
                 System.out.println("Car Not Available");
@@ -228,7 +234,7 @@ public class Main {
     }
 
     private void checkInput(Scanner scanner) {
-        //catch exception if user enters a string
+        //catch exception if user enters a string when an int is required
         while(!scanner.hasNextInt()) { // while input is not an integer
             System.out.println("Invalid Selection"); // print error message
             scanner.next(); 
