@@ -215,6 +215,10 @@ public class Main {
             double totalPrice = price * days;
             System.out.println("Total Price: " + totalPrice);
 
+            //enter payment information and method
+            System.out.print("Please enter your payment information");
+            enterPayment();
+
             //book car
             HireCar hc = new HireCar();
             if (hc.hireCar(searchResult, days)) {
@@ -231,6 +235,16 @@ public class Main {
             // return to main menu
             mainMenu();
         }
+    }
+
+
+    private void enterPayment() {
+        Scanner scanner = new Scanner(System.in);
+
+        PaymentHandler ph = new PaymentHandler();
+        int card = scanner.nextInt();
+        if (!ph.handlePaymentRequest(card))
+            enterPayment();
     }
 
     private void checkInput(Scanner scanner) {
