@@ -93,24 +93,23 @@ public class Main {
         switch (scanner.nextInt()) {
 
             case 1:
-                System.out.println("Profile");
-                UserProfile up = new UserProfile();
-                up.ProfileMenu(username);
-                break;
-            case 2:
                 System.out.println("See List Of Cars");
                 showCars();
                 break;
-            case 3:
+            case 2:
                 System.out.println("Search For a Car");
                 System.out.println("list: " + carList);
                 findCar(carList);
                 break;
-            case 4:
+            case 3:
                 System.out.println("Exit");
                 // exit program
                 System.exit(0);
                 break;
+            case 4:
+                System.out.println("Log Out");
+                isLoggedIn = false;
+                mainMenu();
             default:
                 System.out.println("Invalid Selection");
                 break;
@@ -217,19 +216,22 @@ public class Main {
 
             //enter payment information and method
             System.out.print("Please enter your payment information");
-            enterPayment();
 
+            if (enterPayment()) {
             //book car
             HireCar hc = new HireCar();
-            if (hc.hireCar(searchResult, days)) {
-                System.out.println("Car Booked for " + days + " days");
+                if (hc.hireCar(searchResult, days)) {
+                    System.out.println("Car Booked for " + days + " days");
+                    mainMenu();
+                }
+                else {
+                    System.out.println("Car Not Available");
+                    mainMenu();
+                }
+            } else {
+                System.out.println("Payment falied");
                 mainMenu();
             }
-            else {
-                System.out.println("Car Not Available");
-                mainMenu();
-            }
-            
         }
         else {
             // return to main menu
@@ -238,13 +240,16 @@ public class Main {
     }
 
 
-    private void enterPayment() {
+    private boolean enterPayment() {
         Scanner scanner = new Scanner(System.in);
 
         PaymentHandler ph = new PaymentHandler();
         int card = scanner.nextInt();
-        if (!ph.handlePaymentRequest(card))
+        if (!ph.handlePaymentRequest(card)) {
             enterPayment();
+            return false;
+        }
+        return true;
     }
 
     private void checkInput(Scanner scanner) {
