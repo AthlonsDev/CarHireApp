@@ -20,7 +20,7 @@ public class FileUploader {
         try {
             FileWriter fileWriter = new FileWriter(currentPath + "\\Files\\" + "Users.csv");
             for (User user : users) {
-                fileWriter.write(user.getUsername() + ", " + user.getPassword() + ", " + user.getSavedCars() + ", " + user.getHiredCars() + "\n");
+                fileWriter.write(user.getUsername() + ", " + user.getPassword() + ", " + "\n");
             }
             fileWriter.close();
         } catch (Exception e) {

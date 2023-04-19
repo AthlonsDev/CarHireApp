@@ -7,8 +7,8 @@ import Models.User;
 
 public class RegisterCustomer extends User implements InputCheck {
 
-    public RegisterCustomer(String username, String password, String savedCars, String hiredCars) {
-        super(username, password, savedCars, hiredCars);
+    public RegisterCustomer(String username, String password) {
+        super(username, password);
 
     }
 
@@ -25,7 +25,7 @@ public class RegisterCustomer extends User implements InputCheck {
         if (flag) {
             UsersHandler userHandler = new UsersHandler();
 
-            User user = new User(username, password, "0", "0");
+            User user = new User(username, password);
 
             List<User> userList = new ArrayList<>();
 

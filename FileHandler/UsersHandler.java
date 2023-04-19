@@ -42,7 +42,7 @@ public class UsersHandler {
         // List<Car> user = new ArrayList<>();
         for (String u : usersList) {
             String[] userDetails = u.split(",");
-            User c = new User(userDetails[0], userDetails[1], userDetails[2], userDetails[3]);
+            User c = new User(userDetails[0], userDetails[1]);
             users.add(c);
         }
         // save the users list to a CSV file

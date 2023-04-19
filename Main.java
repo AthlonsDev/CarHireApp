@@ -127,7 +127,7 @@ public class Main {
         System.out.println("Enter Password");
         String password = sc.nextLine();
 
-        RegisterCustomer rc = new RegisterCustomer(null, null, null, null); // pass in null values
+        RegisterCustomer rc = new RegisterCustomer(null, null); // pass in null values
         isLoggedIn = rc.registerCustomer(username, password); // set isLoggedIn to true if registration is successful
 
     }
