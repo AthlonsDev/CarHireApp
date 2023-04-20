@@ -1,8 +1,8 @@
 package FileHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ValidateUser {
@@ -16,6 +16,7 @@ public class ValidateUser {
         File file = new File(currentPath + "\\Files\\" + "Users.csv");
         if(file.exists()) {
             // username exists
+            System.out.println("file exists");
             return true;
         }
         else {
@@ -26,56 +27,34 @@ public class ValidateUser {
 
     public boolean validateUser(String user, String password) {
         
-        // read from Users.csv
-        List<String> users = new ArrayList<>();
+        Map <String, String> users = new HashMap<String, String>();
 
         // read CSV file with multiple lines
         File file = new File(currentPath + "\\Files\\" + "Users.csv");
         try {
             Scanner fileReader = new Scanner(file);
-            while(fileReader.hasNextLine()) {
-                String data = fileReader.nextLine();
-                // put every line in a list
-                users.add(data);
-                // compare username and password
-                // check if username exists
-                int index = checkUsername(user, users);
-                if(index != -1) {
-                    // check if password exists
-                    if(checkPassword(password, users, index)) {
+            while(fileReader.hasNextLine()) { // while there is a line
+                String data = fileReader.nextLine(); 
+                String[] userData = data.split(", "); // split the string at the comma and store it in an array
+                users.put(userData[0], userData[1]); // put the username and password in a map
+                }
+                fileReader.close();
+              
+                if(users.containsKey(user)) { // check if the username exists in the map
+                    System.out.println("username found");
+                    if(users.get(user).equals(password)) { // check if the password is identical to the one in the map
+                        System.out.println("Authentication Successful");
                         return true;
+                    } else {
+                        System.out.println("Authentication Failed - Password did not match"); 
+                        return false;
                     }
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
-    private int checkUsername(String user, List<String> users) {
-        // check if username exists
-        for (String u : users) {
-            if(u.contains(user)) {
-                // get index of list
-                int index = users.indexOf(u);
-                return index;
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        }
-        return -1;
-    }
+            return false;
 
-    private boolean checkPassword(String pass, List<String> users, int index) {
-        // check if password is identical to the one in the list
-        String[] data = users.get(index).split(", ");
-        if(data[1].equals(pass)) {
-            return true;
-        }
-        return false;
-    }
-
-    
-
-
+        } 
 }

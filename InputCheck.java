@@ -1,3 +1,4 @@
+
 public interface InputCheck {
 
     public boolean checkUsername(String input);

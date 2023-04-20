@@ -36,9 +36,9 @@ public class Main {
         }
         else {// main menu if logged in
             System.out.println("****************Welcome To Car Hire System****************");
-            System.out.println("1. Profile");
-            System.out.println("2. See List Of Cars");
-            System.out.println("3. Search For a Car");
+            System.out.println("1. See List Of Cars");
+            System.out.println("2. Search For a Car");
+            System.out.println("3. Logout");
             System.out.println("4. Exit");
             selectLogMenu();
         }
@@ -50,7 +50,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        checkInput(scanner); // check if input is an integer
+        checkInt(scanner); // check if input is an integer
 
         if(!isLoggedIn) {
             switch (scanner.nextInt()) {
@@ -75,9 +75,6 @@ public class Main {
                 // exit program
                 System.exit(0);
                 break;
-            case 5:
-                System.out.println("Find Car(For Debug Purposes)");
-                findCar(carList);
             default:
                 System.out.println("Invalid Selection");
                 break;
@@ -88,7 +85,7 @@ public class Main {
     private void selectLogMenu() {
         Scanner scanner = new Scanner(System.in);
 
-        checkInput(scanner);
+        checkInt(scanner);
 
         switch (scanner.nextInt()) {
 
@@ -102,14 +99,15 @@ public class Main {
                 findCar(carList);
                 break;
             case 3:
+                System.out.println("Log Out");
+                isLoggedIn = false;
+                mainMenu();
+                break;
+            case 4:
                 System.out.println("Exit");
                 // exit program
                 System.exit(0);
                 break;
-            case 4:
-                System.out.println("Log Out");
-                isLoggedIn = false;
-                mainMenu();
             default:
                 System.out.println("Invalid Selection");
                 break;
@@ -159,7 +157,7 @@ public class Main {
         for (String car : carList) {
             System.out.println(car);
         }
-
+        mainMenu();
         return carList;
     }
 
@@ -178,7 +176,7 @@ public class Main {
         
         SearchCars sc = new SearchCars();
         Car searchResult = sc.searchForCar(carList, searchBy);
-        System.out.println(searchResult.toString());
+        // System.out.println(searchResult.toString());
         System.out.println(searchResult.getMake() + " " + searchResult.getModel());
 
         // Check if car is available
@@ -204,7 +202,7 @@ public class Main {
             
             System.out.println("How many days would you like to hire this " + searchResult.getMake() + " for?");
             int days = scanner.nextInt();
-            // checkInput();
+            // checkInt();
 
             // check price per day of car and calculate total price
             String priceString = searchResult.getPrice();
@@ -215,9 +213,10 @@ public class Main {
             System.out.println("Total Price: " + totalPrice);
 
             //enter payment information and method
-            System.out.print("Please enter your payment information");
+            System.out.println("Please enter your payment information");
+            int card = scanner.nextInt();
 
-            if (enterPayment()) {
+            if (enterPayment(card)) {
             //book car
             HireCar hc = new HireCar();
                 if (hc.hireCar(searchResult, days)) {
@@ -240,19 +239,17 @@ public class Main {
     }
 
 
-    private boolean enterPayment() {
-        Scanner scanner = new Scanner(System.in);
-
+    private boolean enterPayment(int card) {        
+        
         PaymentHandler ph = new PaymentHandler();
-        int card = scanner.nextInt();
+        
         if (!ph.handlePaymentRequest(card)) {
-            enterPayment();
             return false;
         }
         return true;
     }
 
-    private void checkInput(Scanner scanner) {
+    private void checkInt(Scanner scanner) {
         //catch exception if user enters a string when an int is required
         while(!scanner.hasNextInt()) { // while input is not an integer
             System.out.println("Invalid Selection"); // print error message

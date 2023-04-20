@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import FileHandler.UsersHandler;
 import FileHandler.ValidateUser;
 import Models.User;
@@ -92,6 +94,7 @@ public class RegisterCustomer extends User implements InputCheck {
 
         return false;
     }
+
 
 
 }

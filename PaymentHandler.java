@@ -12,7 +12,7 @@ public class PaymentHandler {
 
     private boolean checkCardNumber(int number) {
         int digits = String.valueOf(number).length();
-        if(digits == 16)
+        if(digits == 6)
             return true;
         else
             return false;
