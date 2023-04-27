@@ -3,6 +3,7 @@ import java.util.List;
 
 import Models.Car;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -95,29 +96,31 @@ public class MainFX extends Application {
         HBox.getChildren().add(logoutBtn);
     }
 
-    private void carSelector(VBox VBox) {
+    private void carSelector(HBox HBox) {
         //create tableview with cars data
         //add to vbox
-        // showCars();
+        showCars();
         // Car cars = new Car(null, null, null, null, null, null, null);
         TableView tableView = new TableView();
 
         TableColumn<String, String> column1 = 
-        new TableColumn<>("Car");
+        new TableColumn<>("Cars");
         
         column1.setCellValueFactory(
             new PropertyValueFactory<>("Make"));
         
         tableView.getColumns().add(column1);
         //set Car object as tableview items 
-        //iterate through carList and add to tableview        
+        //iterate through carList and add to tableview   
+        for (int i = 0; i < carList.size(); i++) {
+            tableView.getItems().add(new Car(carList.get(i), null, null, null, null, null, null));
+        }     
 
-        tableView.getItems().add(new Car("Ford", "Focus", "2018", "1.6", "Pet", "1.5", "true"));
-        tableView.getItems().add(new Car("Ford", "Focus", "2018", "1.6", "Pet", "1.5", "true"));
-        tableView.getItems().add(new Car("Ford", "Focus", "2018", "1.6", "Pet", "1.5", "true"));
+        //set size of tableview
+        tableView.setMaxSize(800, 200);
+        tableView.setMinSize(600, 200);
 
-
-        VBox.getChildren().add(tableView);
+        HBox.getChildren().add(tableView);
     }
 
 
@@ -130,7 +133,9 @@ public class MainFX extends Application {
         HBox topNav = new HBox();
         VBox centerScene = new VBox();
         VBox leftNav = new VBox();
+        HBox bottomNav = new HBox();
 
+        root.setBottom(bottomNav);
         root.setTop(topNav);
         root.setCenter(centerScene);
         root.setLeft(leftNav);
@@ -149,7 +154,7 @@ public class MainFX extends Application {
         //Set Authentication Screen
         // authPage(centerScene);
         // navBar(topNav);
-        carSelector(leftNav);
+        carSelector(bottomNav);
         
         primaryStage.setScene(new Scene(root, 500, 500, false, null));
         primaryStage.show();
@@ -157,15 +162,19 @@ public class MainFX extends Application {
 
     }
 
-    private List<String> showCars() {
-        // get a list of all cars
-        CarList cl = new CarList();
-        carList = cl.showCars();
+    private ObservableList<List<String>> showCars() {
+       //create observable list of cars
+       CarList cl = new CarList();
+       carList = cl.showCars();
+       ObservableList<List<String>> cars = FXCollections.observableArrayList();
+        cars.add(carList);
 
-        for (String car : carList) {
+        for (List<String> car : cars) {
             System.out.println(car);
         }
-        return carList;
+
+         return cars;
+
     }
 
     public static void main(String[] args) {
