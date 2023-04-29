@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.RootPaneContainer;
+
 import Models.Car;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -35,8 +37,9 @@ import javafx.stage.Window;
 public class MainFX extends Application {
 
     List<String> carList = new ArrayList<>();
+    Car selectedCar = new Car(null, null, null, null, null, null, null);
 
-    
+
     private void authPage(Pane root) {
 
         Button loginBtn = new Button();
@@ -96,7 +99,7 @@ public class MainFX extends Application {
         HBox.getChildren().add(logoutBtn);
     }
 
-    private void carSelector(HBox HBox) {
+    private Car carSelector(BorderPane root, HBox HBox) {
         //create tableview with cars data
         //add to vbox
         showCars();
@@ -120,9 +123,77 @@ public class MainFX extends Application {
         tableView.setMaxSize(800, 200);
         tableView.setMinSize(600, 200);
 
+        //if cell is selected
+        tableView.setOnMouseClicked(e -> {
+            //get selected cell
+            selectedCar = (Car) tableView.getSelectionModel().getSelectedItem();
+            System.out.println(selectedCar.getMake());
+            //create new car object with selected car
+            SearchCars sc = new SearchCars();
+            //cut selectedcar at the first comma
+            String[] splitCar = selectedCar.getMake().split(",");
+            selectedCar.setMake(splitCar[0]);
+            //search for car in database
+            Car result = sc.searchForCar(carList, selectedCar.getMake());
+            centerNav(root, result);
+        });
+
         HBox.getChildren().add(tableView);
+        return selectedCar;
     }
 
+    
+
+    private void mainView(VBox Vbox, Car chosenCar) {
+        HBox HBox = new HBox();
+        Label mainTitle = new Label();
+        mainTitle.setText("Welcome to Car Hire System");
+        mainTitle.setFont(new Font("Arial", 20));
+
+        Label bookingCar = new Label();
+        bookingCar.setText("Would you like to Book This " + chosenCar.getMake() + "?");
+        bookingCar.setFont(new Font("Arial", 20));
+
+        Label bookingTime = new Label();
+        bookingTime.setText("How many Days Would you Like to Book this Car For?");
+        bookingTime.setFont(new Font("Arial", 20));
+
+
+
+        Button yesBtn = new Button();
+        Button noBtn = new Button();
+
+        yesBtn.setText("Yes");
+        yesBtn.setOnAction(e -> {
+            System.out.println("Yes");
+            bookingCar.setText("How many Days Would you Like to Book this Car For?");
+            yesBtn.setText("1 Week");
+            noBtn.setText("2 Weeks");
+        });
+
+        noBtn.setText("No");
+        noBtn.setOnAction(e -> {
+            System.out.println("No");
+        });
+
+        Vbox.getChildren().add(mainTitle);
+        Vbox.getChildren().add(bookingCar);
+        // Vbox.getChildren().add(bookingTime);
+        Vbox.getChildren().add(HBox);
+        HBox.getChildren().add(yesBtn);
+        HBox.getChildren().add(noBtn);
+
+
+    }
+
+    private void centerNav(BorderPane root, Car chosenCar) {
+        VBox centerScene = new VBox();
+        root.setCenter(centerScene);
+        centerScene.setTranslateX(150);
+        centerScene.setTranslateY(100);
+        mainView(centerScene, chosenCar);
+
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -131,18 +202,15 @@ public class MainFX extends Application {
 
         //set up Hbox and VBox
         HBox topNav = new HBox();
-        VBox centerScene = new VBox();
         VBox leftNav = new VBox();
         HBox bottomNav = new HBox();
 
         root.setBottom(bottomNav);
         root.setTop(topNav);
-        root.setCenter(centerScene);
         root.setLeft(leftNav);
 
         //center vbox at center of scene
-        centerScene.setTranslateX(150);
-        centerScene.setTranslateY(100);
+
         
         topNav.setAlignment(javafx.geometry.Pos.CENTER);
         topNav.setSpacing(100);
@@ -153,8 +221,11 @@ public class MainFX extends Application {
 
         //Set Authentication Screen
         // authPage(centerScene);
-        // navBar(topNav);
-        carSelector(bottomNav);
+
+        navBar(topNav);
+
+        carSelector(root, bottomNav);
+
         
         primaryStage.setScene(new Scene(root, 500, 500, false, null));
         primaryStage.show();
