@@ -116,7 +116,8 @@ public class MainFX extends Application {
         //set Car object as tableview items 
         //iterate through carList and add to tableview   
         for (int i = 0; i < carList.size(); i++) {
-            tableView.getItems().add(new Car(carList.get(i), null, null, null, null, null, null));
+            tableView.getItems().add(new Car(carList.get(i), 
+            null, null, null, null, null, null));
         }     
 
         //set size of tableview
@@ -144,7 +145,7 @@ public class MainFX extends Application {
 
     
 
-    private void mainView(VBox Vbox, Car chosenCar) {
+    private void mainView(VBox Vbox, Car chosenCar, BorderPane root) {
         HBox HBox = new HBox();
         Label mainTitle = new Label();
         mainTitle.setText("Welcome to Car Hire System");
@@ -162,13 +163,22 @@ public class MainFX extends Application {
 
         Button yesBtn = new Button();
         Button noBtn = new Button();
+        Button one_week = new Button();
+        Button two_weeks = new Button();
+        Button three_weeks = new Button();
+        Button four_weeks = new Button();
+        TextField card_field = new TextField();
+        Button submit_btn = new Button();
 
         yesBtn.setText("Yes");
         yesBtn.setOnAction(e -> {
             System.out.println("Yes");
             bookingCar.setText("How many Days Would you Like to Book this Car For?");
-            yesBtn.setText("1 Week");
-            noBtn.setText("2 Weeks");
+            HBox.getChildren().clear();
+            HBox.getChildren().add(one_week);
+            HBox.getChildren().add(two_weeks);
+            HBox.getChildren().add(three_weeks);
+            HBox.getChildren().add(four_weeks);
         });
 
         noBtn.setText("No");
@@ -176,9 +186,65 @@ public class MainFX extends Application {
             System.out.println("No");
         });
 
+        one_week.setText("1 Week");
+        one_week.setOnAction(e -> {
+            System.out.println("1 Week");
+            HireCar hc = new HireCar();
+            hc.hireCar(chosenCar, 7);
+            HBox.getChildren().clear();
+            HBox.getChildren().add(card_field);
+            Vbox.getChildren().add(submit_btn);
+        });
+        two_weeks.setText("2 Weeks");
+        two_weeks.setOnAction(e -> {
+            System.out.println("2 Weeks");
+            HireCar hc = new HireCar();
+            hc.hireCar(chosenCar, 14);
+            HBox.getChildren().clear();
+            HBox.getChildren().add(card_field);
+            Vbox.getChildren().add(submit_btn);
+        });
+        three_weeks.setText("3 Weeks");
+        three_weeks.setOnAction(e -> {
+            System.out.println("3 Weeks");
+            HireCar hc = new HireCar();
+            hc.hireCar(chosenCar, 21);
+            HBox.getChildren().clear();
+            HBox.getChildren().add(card_field);
+            Vbox.getChildren().add(submit_btn);
+        });
+        four_weeks.setText("4 Weeks");
+        four_weeks.setOnAction(e -> {
+            System.out.println("4 Weeks");
+            HireCar hc = new HireCar();
+            hc.hireCar(chosenCar, 28);
+            HBox.getChildren().clear();
+            HBox.getChildren().add(card_field);
+            Vbox.getChildren().add(submit_btn);
+        });
+
+        card_field.setPromptText("Enter Card Number");
+        card_field.setMaxWidth(200);
+        card_field.setOnMouseClicked(e -> {
+            card_field.setText(card_field.getText());
+
+        });
+
+        submit_btn.setText("Submit");
+        submit_btn.setOnAction(e -> {
+            System.out.println("Submit");
+            int card_number = Integer.parseInt(card_field.getText());
+            if (enterPayment(card_number)) {
+                System.out.println("Payment Successful");
+                Vbox.getChildren().clear();
+                resultPage(root, chosenCar);
+            } else {
+                System.out.println("Payment Failed");
+            }
+        });
+
         Vbox.getChildren().add(mainTitle);
         Vbox.getChildren().add(bookingCar);
-        // Vbox.getChildren().add(bookingTime);
         Vbox.getChildren().add(HBox);
         HBox.getChildren().add(yesBtn);
         HBox.getChildren().add(noBtn);
@@ -186,12 +252,42 @@ public class MainFX extends Application {
 
     }
 
+    private void resultPage(BorderPane root, Car chosenCar ) {
+        showCars();
+        SearchCars sc = new SearchCars();
+        Car updatedCar = sc.searchForCar(carList, chosenCar.getMake());
+
+
+        VBox vBox = new VBox();
+        Label congrats = new Label();
+        congrats.setText("Congratulations!");
+        congrats.setFont(new Font("Arial", 40));
+        Label result = new Label();
+        result.setText("You have successfully booked a " + updatedCar.getMake()
+         + " from" + updatedCar.getStartTime() + " to" + updatedCar.getEndTime());
+
+        vBox.getChildren().add(congrats);
+        vBox.getChildren().add(result);
+
+        root.setCenter(vBox);
+    }
+
+    private boolean enterPayment(int card) {        
+        
+        PaymentHandler ph = new PaymentHandler();
+        
+        if (!ph.handlePaymentRequest(card)) {
+            return false;
+        }
+        return true;
+    }
+
     private void centerNav(BorderPane root, Car chosenCar) {
         VBox centerScene = new VBox();
         root.setCenter(centerScene);
         centerScene.setTranslateX(150);
         centerScene.setTranslateY(100);
-        mainView(centerScene, chosenCar);
+        mainView(centerScene, chosenCar, root);
 
     }
 
