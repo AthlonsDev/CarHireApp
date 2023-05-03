@@ -1,23 +1,29 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.RootPaneContainer;
 
 import Models.Car;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
@@ -38,9 +44,12 @@ public class MainFX extends Application {
 
     List<String> carList = new ArrayList<>();
     Car selectedCar = new Car(null, null, null, null, null, null, null);
+    HBox topNav = new HBox();
+        VBox leftNav = new VBox();
+        VBox midNav = new VBox();
+        VBox bottomNav = new VBox();
 
-
-    private void authPage(Pane root) {
+    private void authPage(Pane root, VBox vBox) {
 
         Button loginBtn = new Button();
         Label mainTitle = new Label();
@@ -70,14 +79,11 @@ public class MainFX extends Application {
         passField.setMaxSize(200, 50);
         loginBtn.setMaxSize(200, 50);
         mainTitle.setFont(new Font("Arial", 20));
-        mainTitle.setLayoutX(75);
-        loginBtn.setLayoutX(100);
-        userField.setLayoutX(100);
-        passField.setLayoutX(100);
-        root.getChildren().add(mainTitle);
-        root.getChildren().add(userField);
-        root.getChildren().add(passField);
-        root.getChildren().add(loginBtn);
+        vBox.getChildren().add(mainTitle);
+        vBox.getChildren().add(userField);
+        vBox.getChildren().add(passField);
+        vBox.getChildren().add(loginBtn);
+        root.getChildren().add(vBox);
 
     }
 
@@ -99,13 +105,12 @@ public class MainFX extends Application {
         HBox.getChildren().add(logoutBtn);
     }
 
-    private Car carSelector(BorderPane root, HBox HBox) {
+    private Car carSelector(StackPane root, VBox HBox) {
         //create tableview with cars data
         //add to vbox
         showCars();
-        // Car cars = new Car(null, null, null, null, null, null, null);
-        TableView tableView = new TableView();
 
+        TableView tableView = new TableView();
         TableColumn<String, String> column1 = 
         new TableColumn<>("Cars");
         
@@ -121,8 +126,8 @@ public class MainFX extends Application {
         }     
 
         //set size of tableview
-        tableView.setMaxSize(800, 200);
-        tableView.setMinSize(600, 200);
+        tableView.setMaxSize(600, 200);
+        tableView.setMinSize(300, 200);
 
         //if cell is selected
         tableView.setOnMouseClicked(e -> {
@@ -140,13 +145,17 @@ public class MainFX extends Application {
         });
 
         HBox.getChildren().add(tableView);
+        root.getChildren().add(HBox);
         return selectedCar;
     }
 
     
 
-    private void mainView(VBox Vbox, Car chosenCar, BorderPane root) {
+    private void mainView(VBox vBox, Car chosenCar, StackPane root) {
+        //put midNav higher up
+        midNav.setTranslateY(-100);
         HBox HBox = new HBox();
+        HBox.setAlignment(javafx.geometry.Pos.CENTER);
         Label mainTitle = new Label();
         mainTitle.setText("Welcome to Car Hire System");
         mainTitle.setFont(new Font("Arial", 20));
@@ -193,7 +202,7 @@ public class MainFX extends Application {
             hc.hireCar(chosenCar, 7);
             HBox.getChildren().clear();
             HBox.getChildren().add(card_field);
-            Vbox.getChildren().add(submit_btn);
+            midNav.getChildren().add(submit_btn);
         });
         two_weeks.setText("2 Weeks");
         two_weeks.setOnAction(e -> {
@@ -202,7 +211,7 @@ public class MainFX extends Application {
             hc.hireCar(chosenCar, 14);
             HBox.getChildren().clear();
             HBox.getChildren().add(card_field);
-            Vbox.getChildren().add(submit_btn);
+            midNav.getChildren().add(submit_btn);
         });
         three_weeks.setText("3 Weeks");
         three_weeks.setOnAction(e -> {
@@ -211,7 +220,7 @@ public class MainFX extends Application {
             hc.hireCar(chosenCar, 21);
             HBox.getChildren().clear();
             HBox.getChildren().add(card_field);
-            Vbox.getChildren().add(submit_btn);
+            midNav.getChildren().add(submit_btn);
         });
         four_weeks.setText("4 Weeks");
         four_weeks.setOnAction(e -> {
@@ -220,7 +229,7 @@ public class MainFX extends Application {
             hc.hireCar(chosenCar, 28);
             HBox.getChildren().clear();
             HBox.getChildren().add(card_field);
-            Vbox.getChildren().add(submit_btn);
+            midNav.getChildren().add(submit_btn);
         });
 
         card_field.setPromptText("Enter Card Number");
@@ -236,29 +245,74 @@ public class MainFX extends Application {
             int card_number = Integer.parseInt(card_field.getText());
             if (enterPayment(card_number)) {
                 System.out.println("Payment Successful");
-                Vbox.getChildren().clear();
-                resultPage(root, chosenCar);
+                midNav.getChildren().clear();
+                if (addProgress(root))
+                    resultPage(root, chosenCar);
             } else {
                 System.out.println("Payment Failed");
             }
         });
 
-        Vbox.getChildren().add(mainTitle);
-        Vbox.getChildren().add(bookingCar);
-        Vbox.getChildren().add(HBox);
+
+        midNav.getChildren().add(mainTitle);
+        midNav.getChildren().add(bookingCar);
+        midNav.getChildren().add(HBox);
         HBox.getChildren().add(yesBtn);
         HBox.getChildren().add(noBtn);
+        root.getChildren().add(midNav);
 
+
+    }   
+
+    private boolean addProgress(StackPane root) {
+        
+        midNav.setTranslateY(-100);
+        ProgressIndicator progressInd = new ProgressIndicator();
+        // //add a delay 
+        Long delay = 500L;
+        Long period = 500L; 
+        //increase progress every 0.5 seconds
+        TimerTask task = new TimerTask() {
+            double progress = 0;
+            @Override //override run method
+            public void run() { 
+                if(progressInd.getProgress() >= 1) {
+                    cancel();
+                    progressInd.setVisible(false);
+                    
+                }
+                progress += 0.1; //increase progress by 10%
+                Platform.runLater(() -> { //update JavaFX thread
+                    progress += 0.2; 
+                    System.out.println("Progress: " + progressInd.getProgress());
+                    progressInd.setProgress(progress); //update progress indicator 
+                });
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, delay, period); //start timer and perform task
+
+        //move progressInd to center of the scene
+        progressInd.setLayoutY((root.getHeight() - progressInd.getHeight()) / 2);
+        progressInd.setLayoutX((root.getWidth() - progressInd.getWidth()) / 2);
+
+        midNav.getChildren().add(progressInd);
+
+        if (progressInd.getProgress() >= 1.0) {
+            return true;
+        } else {
+            System.out.println("Progress Incomplete");
+            return false;
+        }
 
     }
 
-    private void resultPage(BorderPane root, Car chosenCar ) {
+    private void resultPage(StackPane root, Car chosenCar ) {
         showCars();
         SearchCars sc = new SearchCars();
         Car updatedCar = sc.searchForCar(carList, chosenCar.getMake());
 
-
-        VBox vBox = new VBox();
+        midNav.setTranslateY(-100);
         Label congrats = new Label();
         congrats.setText("Congratulations!");
         congrats.setFont(new Font("Arial", 40));
@@ -266,10 +320,10 @@ public class MainFX extends Application {
         result.setText("You have successfully booked a " + updatedCar.getMake()
          + " from" + updatedCar.getStartTime() + " to" + updatedCar.getEndTime());
 
-        vBox.getChildren().add(congrats);
-        vBox.getChildren().add(result);
+        midNav.getChildren().add(congrats);
+        midNav.getChildren().add(result);
 
-        root.setCenter(vBox);
+        root.getChildren().add(midNav);
     }
 
     private boolean enterPayment(int card) {        
@@ -282,9 +336,9 @@ public class MainFX extends Application {
         return true;
     }
 
-    private void centerNav(BorderPane root, Car chosenCar) {
+    private void centerNav(StackPane root, Car chosenCar) {
         VBox centerScene = new VBox();
-        root.setCenter(centerScene);
+        root.getChildren().add(centerScene);
         centerScene.setTranslateX(150);
         centerScene.setTranslateY(100);
         mainView(centerScene, chosenCar, root);
@@ -294,33 +348,33 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        BorderPane root = new BorderPane();
+        StackPane root = new StackPane();
 
         //set up Hbox and VBox
-        HBox topNav = new HBox();
-        VBox leftNav = new VBox();
-        HBox bottomNav = new HBox();
+        
+        // HBox bottomNav = new HBox();
 
-        root.setBottom(bottomNav);
-        root.setTop(topNav);
-        root.setLeft(leftNav);
+        root.getChildren().add(topNav);
+        root.getChildren().add(leftNav);
 
         //center vbox at center of scene
 
         
-        topNav.setAlignment(javafx.geometry.Pos.CENTER);
-        topNav.setSpacing(100);
+        topNav.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        topNav.setSpacing(130);
         topNav.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-
+        midNav.setAlignment(javafx.geometry.Pos.CENTER);
+        bottomNav.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
 
         primaryStage.setTitle("Car Hire");
 
         //Set Authentication Screen
         // authPage(centerScene);
 
+        
         navBar(topNav);
-
         carSelector(root, bottomNav);
+        // authPage(root, midNav);
 
         
         primaryStage.setScene(new Scene(root, 500, 500, false, null));
