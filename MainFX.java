@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +26,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -93,7 +95,7 @@ public class MainFX extends Application {
         Button logoutBtn = new Button();
         Label mainTitle = new Label();
         mainTitle.setText("Car Hire System");
-        homeBtn.setText("Logo");
+        homeBtn.setText("Back");
         logoutBtn.setText("Log Out");
         logoutBtn.setOnAction(e -> {
             System.out.println("Logout");
@@ -129,6 +131,7 @@ public class MainFX extends Application {
         tableView.setMaxSize(600, 200);
         tableView.setMinSize(300, 200);
 
+        // tableView.setBorder(new Border(new BorderStroke(Color.BLACK, )));
         //if cell is selected
         tableView.setOnMouseClicked(e -> {
             //get selected cell
@@ -141,7 +144,8 @@ public class MainFX extends Application {
             selectedCar.setMake(splitCar[0]);
             //search for car in database
             Car result = sc.searchForCar(carList, selectedCar.getMake());
-            centerNav(root, result);
+            midNav.getChildren().clear();
+            mainView(result, root);
         });
 
         HBox.getChildren().add(tableView);
@@ -151,7 +155,8 @@ public class MainFX extends Application {
 
     
 
-    private void mainView(VBox vBox, Car chosenCar, StackPane root) {
+    private void mainView(Car chosenCar, StackPane root) {
+
         //put midNav higher up
         midNav.setTranslateY(-100);
         HBox HBox = new HBox();
@@ -178,6 +183,7 @@ public class MainFX extends Application {
         Button four_weeks = new Button();
         TextField card_field = new TextField();
         Button submit_btn = new Button();
+        
 
         yesBtn.setText("Yes");
         yesBtn.setOnAction(e -> {
@@ -193,7 +199,14 @@ public class MainFX extends Application {
         noBtn.setText("No");
         noBtn.setOnAction(e -> {
             System.out.println("No");
+            HBox.getChildren().clear();
+            midNav.getChildren().clear();
+            mainView(chosenCar, root);
         });
+
+        String priceString = chosenCar.getPrice();
+        priceString = priceString.substring(2, priceString.indexOf("/"));
+        int carPrice = Integer.parseInt(priceString);
 
         one_week.setText("1 Week");
         one_week.setOnAction(e -> {
@@ -201,6 +214,7 @@ public class MainFX extends Application {
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 7);
             HBox.getChildren().clear();
+            bookingCar.setText("It Will be " + carPrice*7 + " Please Enter Your Card Number");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
@@ -210,6 +224,7 @@ public class MainFX extends Application {
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 14);
             HBox.getChildren().clear();
+            bookingCar.setText("It Will be " + carPrice*14 + " Please Enter Your Card Number");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
@@ -219,6 +234,7 @@ public class MainFX extends Application {
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 21);
             HBox.getChildren().clear();
+            bookingCar.setText("It Will be " + carPrice*21 + " Please Enter Your Card Number");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
@@ -228,6 +244,7 @@ public class MainFX extends Application {
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 28);
             HBox.getChildren().clear();
+            bookingCar.setText("It Will be " + carPrice*28 + " Please Enter Your Card Number");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
@@ -235,7 +252,7 @@ public class MainFX extends Application {
         card_field.setPromptText("Enter Card Number");
         card_field.setMaxWidth(200);
         card_field.setOnMouseClicked(e -> {
-            card_field.setText(card_field.getText());
+        card_field.setText(card_field.getText());
 
         });
 
@@ -246,8 +263,11 @@ public class MainFX extends Application {
             if (enterPayment(card_number)) {
                 System.out.println("Payment Successful");
                 midNav.getChildren().clear();
-                if (addProgress(root))
+                // new Thread(addProgress(root, chosenCar)).start();;
+                // addProgress(root);
+                // if(flag)
                     resultPage(root, chosenCar);
+                
             } else {
                 System.out.println("Payment Failed");
             }
@@ -259,55 +279,36 @@ public class MainFX extends Application {
         midNav.getChildren().add(HBox);
         HBox.getChildren().add(yesBtn);
         HBox.getChildren().add(noBtn);
-        root.getChildren().add(midNav);
+        if(!(root.getChildren().contains(midNav)))
+            root.getChildren().add(midNav);
 
 
     }   
-
+    boolean flag = false;
     private boolean addProgress(StackPane root) {
         
         midNav.setTranslateY(-100);
         ProgressIndicator progressInd = new ProgressIndicator();
-        // //add a delay 
-        Long delay = 500L;
-        Long period = 500L; 
-        //increase progress every 0.5 seconds
+        // //add a delay
+        Long delay = 5000L;
+        Long period = 5000L; 
+
         TimerTask task = new TimerTask() {
-            double progress = 0;
-            @Override //override run method
-            public void run() { 
-                if(progressInd.getProgress() >= 1) {
-                    cancel();
-                    progressInd.setVisible(false);
-                    
-                }
-                progress += 0.1; //increase progress by 10%
-                Platform.runLater(() -> { //update JavaFX thread
-                    progress += 0.2; 
-                    System.out.println("Progress: " + progressInd.getProgress());
-                    progressInd.setProgress(progress); //update progress indicator 
-                });
+            public void run() {
+                progressInd.setVisible(false);
+                flag = true;
             }
         };
+    
         Timer timer = new Timer();
         timer.schedule(task, delay, period); //start timer and perform task
-
-        //move progressInd to center of the scene
-        progressInd.setLayoutY((root.getHeight() - progressInd.getHeight()) / 2);
-        progressInd.setLayoutX((root.getWidth() - progressInd.getWidth()) / 2);
-
         midNav.getChildren().add(progressInd);
-
-        if (progressInd.getProgress() >= 1.0) {
-            return true;
-        } else {
-            System.out.println("Progress Incomplete");
-            return false;
-        }
+        System.out.println(flag);
+        return flag;
 
     }
 
-    private void resultPage(StackPane root, Car chosenCar ) {
+    private Runnable resultPage(StackPane root, Car chosenCar) {
         showCars();
         SearchCars sc = new SearchCars();
         Car updatedCar = sc.searchForCar(carList, chosenCar.getMake());
@@ -323,7 +324,8 @@ public class MainFX extends Application {
         midNav.getChildren().add(congrats);
         midNav.getChildren().add(result);
 
-        root.getChildren().add(midNav);
+        // root.getChildren().add(midNav);
+        return null;
     }
 
     private boolean enterPayment(int card) {        
@@ -337,11 +339,11 @@ public class MainFX extends Application {
     }
 
     private void centerNav(StackPane root, Car chosenCar) {
-        VBox centerScene = new VBox();
-        root.getChildren().add(centerScene);
-        centerScene.setTranslateX(150);
-        centerScene.setTranslateY(100);
-        mainView(centerScene, chosenCar, root);
+        // VBox centerScene = new VBox();
+        // root.getChildren().add(centerScene);
+        // centerScene.setTranslateX(150);
+        // centerScene.setTranslateY(100);
+        mainView(chosenCar, root);
 
     }
 
@@ -356,6 +358,8 @@ public class MainFX extends Application {
 
         root.getChildren().add(topNav);
         root.getChildren().add(leftNav);
+        
+
 
         //center vbox at center of scene
 
