@@ -1,19 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.RootPaneContainer;
-
 import Models.Car;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,38 +18,32 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-
 
 public class MainFX extends Application {
 
     List<String> carList = new ArrayList<>();
     Car selectedCar = new Car(null, null, null, null, null, null, null);
+    VBox loginNav = new VBox();
     HBox topNav = new HBox();
-        VBox leftNav = new VBox();
-        VBox midNav = new VBox();
-        VBox bottomNav = new VBox();
+    VBox leftNav = new VBox();
+    VBox midNav = new VBox();
+    VBox bottomNav = new VBox();
 
-    private void authPage(Pane root, VBox vBox) {
-
+    private void authPage(StackPane root, VBox vBox) {
+        
         Button loginBtn = new Button();
         Label mainTitle = new Label();
         TextField userField = new TextField();
+        Label errLabel = new Label();
+        errLabel.setTextFill(Color.RED);
         userField.setPromptText("Enter Username");
         userField.setOnMouseClicked(e -> {            
             userField.setText(userField.getText().toString());
@@ -64,6 +52,7 @@ public class MainFX extends Application {
         passField.setPromptText("Enter Password");
         passField.setOnMouseClicked(e -> {
             passField.setText(passField.getText().toString());
+
         });
         
         mainTitle.setText("Car Hire System");
@@ -73,8 +62,16 @@ public class MainFX extends Application {
             System.out.println("password: " + passField.getText());
 
             RegisterCustomer rc = new RegisterCustomer(null, null);
-            if (rc.registerCustomer(userField.getText(), passField.getText()))
-                root.getChildren().clear();                
+            if (rc.registerCustomer(userField.getText(), passField.getText())) {
+                System.out.println("Login Successful");
+                vBox.getChildren().clear(); 
+                startApp(root);
+            } else {
+                System.out.println("Login Failed Add red label");
+                userField.setStyle("-fx-border-color: red");
+                passField.setStyle("-fx-border-color: red");
+                errLabel.setText("Login Failed");
+            }           
 
         });
         userField.setMaxSize(200, 50);
@@ -85,11 +82,12 @@ public class MainFX extends Application {
         vBox.getChildren().add(userField);
         vBox.getChildren().add(passField);
         vBox.getChildren().add(loginBtn);
+        vBox.getChildren().add(errLabel);
         root.getChildren().add(vBox);
 
     }
 
-    private void navBar(HBox HBox) {
+    private void navBar(StackPane root, HBox HBox) {
         //add navbar to hbox
         Button homeBtn = new Button();
         Button logoutBtn = new Button();
@@ -97,19 +95,22 @@ public class MainFX extends Application {
         mainTitle.setText("Car Hire System");
         homeBtn.setText("Back");
         logoutBtn.setText("Log Out");
+
         logoutBtn.setOnAction(e -> {
             System.out.println("Logout");
-        });
-        mainTitle.setFont(new Font("Arial", 20));
 
+            root.getChildren().clear();
+            startLogin(root, loginNav);
+        });
+
+        mainTitle.setFont(new Font("Arial", 20));
         HBox.getChildren().add(homeBtn);
         HBox.getChildren().add(mainTitle);
         HBox.getChildren().add(logoutBtn);
+        root.getChildren().add(HBox);
     }
 
     private Car carSelector(StackPane root, VBox HBox) {
-        //create tableview with cars data
-        //add to vbox
         showCars();
 
         TableView tableView = new TableView();
@@ -149,14 +150,15 @@ public class MainFX extends Application {
         });
 
         HBox.getChildren().add(tableView);
-        root.getChildren().add(HBox);
+        if(!(root.getChildren().contains(HBox)))
+            root.getChildren().add(HBox);
         return selectedCar;
     }
 
     
 
     private void mainView(Car chosenCar, StackPane root) {
-
+        midNav.getChildren().clear();
         //put midNav higher up
         midNav.setTranslateY(-100);
         HBox HBox = new HBox();
@@ -201,12 +203,18 @@ public class MainFX extends Application {
             System.out.println("No");
             HBox.getChildren().clear();
             midNav.getChildren().clear();
-            mainView(chosenCar, root);
+            welcomeMessage(root);
         });
 
         String priceString = chosenCar.getPrice();
+        //cut the price string to just the number
         priceString = priceString.substring(2, priceString.indexOf("/"));
-        int carPrice = Integer.parseInt(priceString);
+        //when reloading the $ seems to appear, so if it does this will take care of it
+        if(priceString.contains("$")) {
+            priceString = priceString.replace("$", "");
+        }
+        System.out.println("price: " + priceString);
+        int carPrice = Integer.parseInt(priceString); //convert price to integer
 
         one_week.setText("1 Week");
         one_week.setOnAction(e -> {
@@ -263,10 +271,7 @@ public class MainFX extends Application {
             if (enterPayment(card_number)) {
                 System.out.println("Payment Successful");
                 midNav.getChildren().clear();
-                // new Thread(addProgress(root, chosenCar)).start();;
-                // addProgress(root);
-                // if(flag)
-                    resultPage(root, chosenCar);
+                addProgress(root, chosenCar); //add progress bar to simulate the payment process
                 
             } else {
                 System.out.println("Payment Failed");
@@ -284,36 +289,38 @@ public class MainFX extends Application {
 
 
     }   
-    boolean flag = false;
-    private boolean addProgress(StackPane root) {
+    private void addProgress(StackPane root, Car chosenCar) {
         
         midNav.setTranslateY(-100);
         ProgressIndicator progressInd = new ProgressIndicator();
         // //add a delay
-        Long delay = 5000L;
-        Long period = 5000L; 
+        Long delay = 2000L;
+        Long period = 2000L; 
 
         TimerTask task = new TimerTask() {
             public void run() {
-                progressInd.setVisible(false);
-                flag = true;
+                progressInd.setVisible(false); //hide the progress bar
+                Platform.runLater(() -> resultPage(root, chosenCar)); //run the result page after the delay
+                // stop the timer 
+                this.cancel();  //cancel the timer once it has run
             }
         };
     
         Timer timer = new Timer();
         timer.schedule(task, delay, period); //start timer and perform task
         midNav.getChildren().add(progressInd);
-        System.out.println(flag);
-        return flag;
-
     }
 
     private Runnable resultPage(StackPane root, Car chosenCar) {
-        showCars();
+        showCars(); //update the car list
+        bottomNav.getChildren().clear();
+        carSelector(root, bottomNav); //update the tableview
         SearchCars sc = new SearchCars();
-        Car updatedCar = sc.searchForCar(carList, chosenCar.getMake());
+        Car updatedCar = sc.searchForCar(carList, chosenCar.getMake()); //get the updated car
 
         midNav.setTranslateY(-100);
+        Button reloadButton = new Button();
+        reloadButton.setText("Home");
         Label congrats = new Label();
         congrats.setText("Congratulations!");
         congrats.setFont(new Font("Arial", 40));
@@ -321,10 +328,17 @@ public class MainFX extends Application {
         result.setText("You have successfully booked a " + updatedCar.getMake()
          + " from" + updatedCar.getStartTime() + " to" + updatedCar.getEndTime());
 
+        reloadButton.setOnAction(e -> {
+            System.out.println("Home");
+            midNav.getChildren().clear();
+            welcomeMessage(root);
+        });
+
         midNav.getChildren().add(congrats);
         midNav.getChildren().add(result);
-
-        // root.getChildren().add(midNav);
+        midNav.getChildren().add(reloadButton);
+        if(!(root.getChildren().contains(midNav)))
+            root.getChildren().add(midNav);
         return null;
     }
 
@@ -338,13 +352,27 @@ public class MainFX extends Application {
         return true;
     }
 
-    private void centerNav(StackPane root, Car chosenCar) {
-        // VBox centerScene = new VBox();
-        // root.getChildren().add(centerScene);
-        // centerScene.setTranslateX(150);
-        // centerScene.setTranslateY(100);
-        mainView(chosenCar, root);
+    private void welcomeMessage(StackPane root) {
+        Label mainMessage = new Label();
+        midNav.setTranslateY(-100);
+        mainMessage.setText("Welcome to Car Hire"  + '\n' + "Please Select a Car from the list below");
+        mainMessage.setTextAlignment(TextAlignment.CENTER);
+        mainMessage.setFont(new Font("Arial", 20));
+        midNav.getChildren().add(mainMessage);
+        if(!(root.getChildren().contains(midNav)))
+            root.getChildren().add(midNav);
+    }
 
+    private void startApp(StackPane root) {
+
+        navBar(root, topNav);
+        welcomeMessage(root);
+        carSelector(root, bottomNav);
+        
+    }
+
+    private void startLogin(StackPane root, VBox loginNav) {
+        authPage(root, loginNav);
     }
 
     @Override
@@ -352,33 +380,20 @@ public class MainFX extends Application {
 
         StackPane root = new StackPane();
 
-        //set up Hbox and VBox
-        
-        // HBox bottomNav = new HBox();
+        startLogin(root, loginNav);
 
-        root.getChildren().add(topNav);
-        root.getChildren().add(leftNav);
-        
-
-
-        //center vbox at center of scene
-
-        
+        loginNav.setAlignment(javafx.geometry.Pos.CENTER);
+        loginNav.setMaxHeight(220);        
         topNav.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-        topNav.setSpacing(130);
-        topNav.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+        topNav.setSpacing(110);
+        topNav.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         midNav.setAlignment(javafx.geometry.Pos.CENTER);
+        midNav.setMaxHeight(220);
         bottomNav.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
+        bottomNav.setMaxHeight(250);
+        bottomNav.setTranslateY(125);
 
         primaryStage.setTitle("Car Hire");
-
-        //Set Authentication Screen
-        // authPage(centerScene);
-
-        
-        navBar(topNav);
-        carSelector(root, bottomNav);
-        // authPage(root, midNav);
 
         
         primaryStage.setScene(new Scene(root, 500, 500, false, null));
