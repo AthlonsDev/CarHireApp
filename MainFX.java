@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,8 +17,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -74,6 +77,7 @@ public class MainFX extends Application {
             }           
 
         });
+
         userField.setMaxSize(200, 50);
         passField.setMaxSize(200, 50);
         loginBtn.setMaxSize(200, 50);
@@ -89,13 +93,15 @@ public class MainFX extends Application {
 
     private void navBar(StackPane root, HBox HBox) {
         //add navbar to hbox
-        Button homeBtn = new Button();
         Button logoutBtn = new Button();
         Label mainTitle = new Label();
         mainTitle.setText("Car Hire System");
-        homeBtn.setText("Back");
-        logoutBtn.setText("Log Out");
-
+        // logoutBtn.setText("Log Out");
+        ImageView icon = new ImageView("logout.png");
+        icon.setFitHeight(25);
+        icon.setFitWidth(25);
+        logoutBtn.setGraphic(icon);
+        logoutBtn.setCursor(Cursor.HAND);
         logoutBtn.setOnAction(e -> {
             System.out.println("Logout");
 
@@ -104,9 +110,7 @@ public class MainFX extends Application {
         });
 
         mainTitle.setFont(new Font("Arial", 20));
-        HBox.getChildren().add(homeBtn);
-        HBox.getChildren().add(mainTitle);
-        HBox.getChildren().add(logoutBtn);
+        HBox.getChildren().addAll(logoutBtn, mainTitle);
         root.getChildren().add(HBox);
     }
 
@@ -132,8 +136,6 @@ public class MainFX extends Application {
         tableView.setMaxSize(600, 200);
         tableView.setMinSize(300, 200);
 
-        // tableView.setBorder(new Border(new BorderStroke(Color.BLACK, )));
-        //if cell is selected
         tableView.setOnMouseClicked(e -> {
             //get selected cell
             selectedCar = (Car) tableView.getSelectionModel().getSelectedItem();
@@ -185,7 +187,14 @@ public class MainFX extends Application {
         Button four_weeks = new Button();
         TextField card_field = new TextField();
         Button submit_btn = new Button();
-        
+
+        yesBtn.setCursor(Cursor.HAND);
+        noBtn.setCursor(Cursor.HAND);   
+        one_week.setCursor(Cursor.HAND);
+        two_weeks.setCursor(Cursor.HAND);
+        three_weeks.setCursor(Cursor.HAND);
+        four_weeks.setCursor(Cursor.HAND);
+        submit_btn.setCursor(Cursor.HAND);
 
         yesBtn.setText("Yes");
         yesBtn.setOnAction(e -> {
@@ -384,22 +393,19 @@ public class MainFX extends Application {
 
         loginNav.setAlignment(javafx.geometry.Pos.CENTER);
         loginNav.setMaxHeight(220);        
-        topNav.setAlignment(javafx.geometry.Pos.TOP_CENTER);
-        topNav.setSpacing(110);
+        topNav.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+        topNav.setSpacing(100);
         topNav.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         midNav.setAlignment(javafx.geometry.Pos.CENTER);
         midNav.setMaxHeight(220);
+        topNav.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         bottomNav.setAlignment(javafx.geometry.Pos.BOTTOM_CENTER);
         bottomNav.setMaxHeight(250);
         bottomNav.setTranslateY(125);
 
         primaryStage.setTitle("Car Hire");
-
-        
         primaryStage.setScene(new Scene(root, 500, 500, false, null));
         primaryStage.show();
-
-
     }
 
     private ObservableList<List<String>> showCars() {
