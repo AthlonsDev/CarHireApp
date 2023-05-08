@@ -62,6 +62,7 @@ public class MainFX extends Application {
         
         mainTitle.setText("Car Hire System"); 
         loginBtn.setText("Log In");
+        loginBtn.setCursor(Cursor.HAND);
         loginBtn.setOnAction(e -> {
             System.out.println("Username: " + userField.getText());
             System.out.println("password: " + passField.getText());
@@ -168,17 +169,18 @@ public class MainFX extends Application {
         HBox HBox = new HBox();
         HBox.setAlignment(javafx.geometry.Pos.CENTER);
         Label mainTitle = new Label();
+        
         mainTitle.setText("Welcome to Car Hire System");
         mainTitle.setFont(new Font("Arial", 20));
 
         Label bookingCar = new Label();
+        bookingCar.setTextAlignment(TextAlignment.CENTER);
         bookingCar.setText("Would you like to Book This " + chosenCar.getMake() + "?");
         bookingCar.setFont(new Font("Arial", 20));
 
         Label bookingTime = new Label();
         bookingTime.setText("How many Days Would you Like to Book this Car For?");
         bookingTime.setFont(new Font("Arial", 20));
-
 
 
         Button yesBtn = new Button();
@@ -292,9 +294,16 @@ public class MainFX extends Application {
 
         midNav.getChildren().add(mainTitle);
         midNav.getChildren().add(bookingCar);
-        midNav.getChildren().add(HBox);
-        HBox.getChildren().add(yesBtn);
-        HBox.getChildren().add(noBtn);
+
+        if (chosenCar.isHired().equals("  Unavailable")) {
+            bookingCar.setText("This Car is Unavailable Until" + chosenCar.getEndTime() + "\n" + " Please Select Another Car");
+
+        } else {
+            midNav.getChildren().add(HBox);
+            HBox.getChildren().add(yesBtn);
+            HBox.getChildren().add(noBtn);
+        }
+
         if(!(root.getChildren().contains(midNav)))
             root.getChildren().add(midNav);
 
@@ -332,6 +341,7 @@ public class MainFX extends Application {
         midNav.setTranslateY(-100);
         Button reloadButton = new Button();
         reloadButton.setText("Home");
+        reloadButton.setCursor(Cursor.HAND);
         Label congrats = new Label();
         congrats.setText("Congratulations!");
         congrats.setFont(new Font("Arial", 40));
@@ -390,6 +400,7 @@ public class MainFX extends Application {
         Long delay = 2000L;
         Long period = 2000L; 
 
+        ProgressIndicator progressInd = new ProgressIndicator();
         ImageView image = new ImageView("Logo.png"); //show logo
         image.setFitWidth(250);
         image.setFitHeight(100);
@@ -397,7 +408,9 @@ public class MainFX extends Application {
         
         TimerTask task = new TimerTask() {
             public void run() {
+                progressInd.setVisible(false); //hide the progress bar
                 image.setVisible(false); //hide the Image
+                // root.getChildren().clear(); //clear the root
                 Platform.runLater(() -> startLogin(root, loginNav)); //run the result page after the delay
                 // stop the timer 
                 this.cancel();  //cancel the timer once it has run
@@ -406,6 +419,7 @@ public class MainFX extends Application {
     
         Timer timer = new Timer();
         timer.schedule(task, delay, period); //start timer and perform task
+        root.getChildren().add(progressInd);
         root.getChildren().add(image);
     }
 
