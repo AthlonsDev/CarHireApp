@@ -64,16 +64,12 @@ public class MainFX extends Application {
         loginBtn.setText("Log In");
         loginBtn.setCursor(Cursor.HAND);
         loginBtn.setOnAction(e -> {
-            System.out.println("Username: " + userField.getText());
-            System.out.println("password: " + passField.getText());
 
             RegisterCustomer rc = new RegisterCustomer(null, null);
             if (rc.registerCustomer(userField.getText(), passField.getText())) {
-                System.out.println("Login Successful");
                 vBox.getChildren().clear(); 
                 startApp(root);
             } else {
-                System.out.println("Login Failed Add red label");
                 userField.setStyle("-fx-border-color: red");
                 passField.setStyle("-fx-border-color: red");
                 errLabel.setText("Login Failed");
@@ -202,7 +198,6 @@ public class MainFX extends Application {
 
         yesBtn.setText("Yes");
         yesBtn.setOnAction(e -> {
-            System.out.println("Yes");
             bookingCar.setText("How many Days Would you Like to Book this Car For?");
             HBox.getChildren().clear();
             HBox.getChildren().add(one_week);
@@ -213,7 +208,6 @@ public class MainFX extends Application {
 
         noBtn.setText("No");
         noBtn.setOnAction(e -> {
-            System.out.println("No");
             HBox.getChildren().clear();
             midNav.getChildren().clear();
             welcomeMessage(root);
@@ -231,41 +225,37 @@ public class MainFX extends Application {
 
         one_week.setText("1 Week");
         one_week.setOnAction(e -> {
-            System.out.println("1 Week");
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 7);
             HBox.getChildren().clear();
-            bookingCar.setText("It Will be " + carPrice*7 + " Please Enter Your Card Number");
+            bookingCar.setText("It Will be " + carPrice*7 + " Please Enter Your Card Number \n (6 digits number)");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
         two_weeks.setText("2 Weeks");
         two_weeks.setOnAction(e -> {
-            System.out.println("2 Weeks");
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 14);
             HBox.getChildren().clear();
-            bookingCar.setText("It Will be " + carPrice*14 + " Please Enter Your Card Number");
+            bookingCar.setText("It Will be " + carPrice*14 + " Please Enter Your Card Number \n (6 digits number)");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
         three_weeks.setText("3 Weeks");
         three_weeks.setOnAction(e -> {
-            System.out.println("3 Weeks");
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 21);
             HBox.getChildren().clear();
-            bookingCar.setText("It Will be " + carPrice*21 + " Please Enter Your Card Number");
+            bookingCar.setText("It Will be " + carPrice*21 + " Please Enter Your Card Number \n (6 digits number)");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
         four_weeks.setText("4 Weeks");
         four_weeks.setOnAction(e -> {
-            System.out.println("4 Weeks");
             HireCar hc = new HireCar();
             hc.hireCar(chosenCar, 28);
             HBox.getChildren().clear();
-            bookingCar.setText("It Will be " + carPrice*28 + " Please Enter Your Card Number");
+            bookingCar.setText("It Will be " + carPrice*28 + " Please Enter Your Card Number \n (6 digits number)");
             HBox.getChildren().add(card_field);
             midNav.getChildren().add(submit_btn);
         });
@@ -279,15 +269,13 @@ public class MainFX extends Application {
 
         submit_btn.setText("Submit");
         submit_btn.setOnAction(e -> {
-            System.out.println("Submit");
             int card_number = Integer.parseInt(card_field.getText());
             if (enterPayment(card_number)) {
-                System.out.println("Payment Successful");
                 midNav.getChildren().clear();
                 addProgress(root, chosenCar); //add progress bar to simulate the payment process
                 
             } else {
-                System.out.println("Payment Failed");
+                card_field.setStyle("-fx-border-color: red");
             }
         });
 
@@ -350,7 +338,6 @@ public class MainFX extends Application {
          + " from" + updatedCar.getStartTime() + " to" + updatedCar.getEndTime());
 
         reloadButton.setOnAction(e -> {
-            System.out.println("Home");
             midNav.getChildren().clear();
             welcomeMessage(root);
         });
@@ -454,10 +441,6 @@ public class MainFX extends Application {
        carList = cl.showCars();
        ObservableList<List<String>> cars = FXCollections.observableArrayList();
         cars.add(carList);
-
-        for (List<String> car : cars) {
-            System.out.println(car);
-        }
 
          return cars;
 
