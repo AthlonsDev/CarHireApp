@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import Models.Car;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainFX extends Application {
 
@@ -58,7 +60,7 @@ public class MainFX extends Application {
 
         });
         
-        mainTitle.setText("Car Hire System");
+        mainTitle.setText("Car Hire System"); 
         loginBtn.setText("Log In");
         loginBtn.setOnAction(e -> {
             System.out.println("Username: " + userField.getText());
@@ -384,12 +386,36 @@ public class MainFX extends Application {
         authPage(root, loginNav);
     }
 
+    private void splashScreen(StackPane root) {
+        Long delay = 2000L;
+        Long period = 2000L; 
+
+        ImageView image = new ImageView("Logo.png"); //show logo
+        image.setFitWidth(250);
+        image.setFitHeight(100);
+        image.setTranslateY(-100);
+        
+        TimerTask task = new TimerTask() {
+            public void run() {
+                image.setVisible(false); //hide the Image
+                Platform.runLater(() -> startLogin(root, loginNav)); //run the result page after the delay
+                // stop the timer 
+                this.cancel();  //cancel the timer once it has run
+            }
+        };
+    
+        Timer timer = new Timer();
+        timer.schedule(task, delay, period); //start timer and perform task
+        root.getChildren().add(image);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         StackPane root = new StackPane();
 
-        startLogin(root, loginNav);
+        // startLogin(root, loginNav);
+        splashScreen(root);
 
         loginNav.setAlignment(javafx.geometry.Pos.CENTER);
         loginNav.setMaxHeight(220);        
